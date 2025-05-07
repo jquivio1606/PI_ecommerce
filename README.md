@@ -34,12 +34,12 @@ php artisan serve
 
 ## Urls funcionales
 - De cara al usuario: (Se puede llegar a ellas navegando por la web)
-    http://127.0.0.1:8000/
-    http://127.0.0.1:8000/tienda
-    http://127.0.0.1:8000/carrito
-    http://127.0.0.1:8000/productos/{id}
-    http://127.0.0.1:8000/confirmacionPedido
+    [Página principal](http://127.0.0.1:8000/)  
+    [Tienda](http://127.0.0.1:8000/tienda)  
+    [Carrito](http://127.0.0.1:8000/carrito)  
+    [Detalles de un producto](http://127.0.0.1:8000/productos/{id})  
+    [Confirmación del pedido](http://127.0.0.1:8000/confirmacionPedido)
 
 - De cara al administrador: (Sólo se pueden acceder mediante la url)
-    http://127.0.0.1:8000/productos
-    http://127.0.0.1:8000/pedidos
+    [Gestión de productos](http://127.0.0.1:8000/productos)  
+    [Gestión de pedidos](http://127.0.0.1:8000/pedidos)
