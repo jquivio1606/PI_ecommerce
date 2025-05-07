@@ -2,10 +2,24 @@
 Repositorio del Proyecto Integrado de DAW
 
 ## Requisitos Previos
-- **Instalar XAMPP:** Asegúrate de tener XAMPP instalado en tu máquina. Puedes descargarlo desde aquí.
+- **Instalar:** 
+    - XAMPP: Para tener el servidor web y base de datos (MySQL o MariaDB).
+    - Composer: Para gestionar las dependencias de PHP.
+    - Laravel: Instalado a través de Composer.
+    - Node.js y NPM: Si utilizas tecnologías de frontend como Vue.js, React, o necesitas compilar archivos CSS/JS.
 
-- **Tener el archivo .env con los datos correctos:**
+- **Descargar dependencias:**
+    Php: composer install
 
+    De frontend: npm install y npm run dev
+
+- **Crear el archivo .env**
+    cp .env.example .env (si existe el archivo .env.example)
+
+- **Generar la clave de la aplicación Laravel:**
+    php artisan key:generate
+
+- **Configurar la base de datos en .env:**
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
