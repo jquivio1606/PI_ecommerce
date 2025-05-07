@@ -1,3 +1,3 @@
 <x-layouts.base metaTitle="Tienda" tituloSeccion="Nuestros Productos">
-    @livewire('tienda-mostrar-prod')
+    @livewire('show-store-prod')
 </x-layouts.base>

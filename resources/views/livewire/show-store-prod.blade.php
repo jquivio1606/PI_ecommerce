@@ -105,27 +105,14 @@
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">{{ $product->name }}</h5>
                                 <p class="card-text">{{ $product->description }}</p>
-                                <div class="mb-3">
-                                    <label for="talla" class="form-label"><strong>Tallas:</strong></label>
-                                    <div class="d-flex flex-wrap">
-                                        @foreach ($product->sizes as $size)
-                                            <div class="form-check me-3 mb-2">
-                                                <input class="form-check-input" type="checkbox" wire:model="sizes"
-                                                    id="size-{{ $size->name }}" value="{{ $size->name }}">
-                                                <label class="form-check-label"
-                                                    for="size-{{ $size->name }}">{{ strtoupper($size->name) }}</label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
 
+                                {{-- Las tallas se mostrarán dentro de este componente --}}
                                 <div class="mt-auto">
                                     <p class="fw-bold fs-5">{{ $product->price }}€</p>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <a href="{{ route('productos.show', $product->id) }}"
-                                            class="btn btn-outline-primary flex-grow-1">Ver Producto</a>
-                                        @livewire('add-to-cart')
-                                    </div>
+                                    <a href="{{ route('productos.show', $product->id) }}"
+                                        class="btn btn-outline-primary flex-grow-1">Ver detalles del
+                                        Producto</a>
+                                    <livewire:add-to-cart :product="$product" />
                                 </div>
                             </div>
                         </div>
@@ -139,23 +126,17 @@
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">{{ $product->name }}</h5>
                                 <p class="card-text">{{ $product->description }}</p>
-                                <div class="mb-3">
-                                    <label for="talla" class="form-label"><strong>Tallas:</strong></label>
-                                    <div class="d-flex flex-wrap">
-                                        @foreach ($product->sizes as $size)
-                                            <div class="form-check me-3 mb-2">
-                                                <input class="form-check-input" type="checkbox" wire:model="sizes"
-                                                    id="size-{{ $size->name }}" value="{{ $size->name }}">
-                                                <label class="form-check-label"
-                                                    for="size-{{ $size->name }}">{{ strtoupper($size->name) }}</label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
+
+
+                                {{-- Las tallas se mostrarán dentro de este componente --}}
+                                <p class="fw-bold fs-5">{{ $product->price }}€</p>
                                 <div class="mt-auto">
-                                    <p class="fw-bold fs-5">{{ $product->price }}€</p>
-                                    <livewire:add-to-cart :product='$product' />
+                                    <livewire:add-to-cart :product="$product" />
+                                    <a href="{{ route('productos.show', $product->id) }}"
+                                        class="btn btn-outline-primary w-100 mt-4">Ver detalles del
+                                        Producto</a>
                                 </div>
+
                             </div>
                         </div>
                     </div>

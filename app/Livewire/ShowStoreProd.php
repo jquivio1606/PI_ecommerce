@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Product;
 use App\Models\Size;
 
-class TiendaMostrarProd extends Component
+class ShowStoreProd extends Component
 {
     public $gender;
     public $categories = [];
@@ -32,7 +32,7 @@ class TiendaMostrarProd extends Component
     public function render()
     {
         $products = $this->prodFiltrado ?? Product::all(); // Mostrar productos filtrados si existen
-        return view('livewire.tienda-mostrar-prod', compact('products'));
+        return view('livewire.show-store-prod', compact('products'));
     }
 
     public function mount()

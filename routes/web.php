@@ -3,6 +3,7 @@
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Livewire\OrderConfirmation;
 
 
 Route::get('/', function () {
@@ -14,12 +15,17 @@ Route::view('/sobreNosotros', 'user.sobreNosotros')->name('user.sobreNosotros');
 
 Route::view('/carrito', 'user.carrito')->name('user.carrito');
 Route::view('/producto', 'user.product')->name('user.product');
+Route::view('/confirmacionPedido', 'user.orderConfirmation')->name('user.orderConfirmation');
+
+
 
 // VISTAS CRUD DE PRODUCTO
 Route::get('/productos', function () {
     return view('admin.product');
 });
-
+Route::get('/pedidos', function () {
+    return view('admin.order');
+});
 
 
 Route::get('/productos/{id}', function ($id) {
