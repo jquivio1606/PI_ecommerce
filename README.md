@@ -34,6 +34,7 @@ php artisan serve
 
 ## Urls funcionales
 - De cara al usuario: (Se puede llegar a ellas navegando por la web)
+
     [Página principal](http://127.0.0.1:8000/)  
     [Tienda](http://127.0.0.1:8000/tienda)  
     [Carrito](http://127.0.0.1:8000/carrito)  
