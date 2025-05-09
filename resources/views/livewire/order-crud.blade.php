@@ -7,6 +7,55 @@
         </div>
     @endif
 
+
+    <div class="card mb-4"> 
+        <div class="card-header bg-light"> 
+            <strong>Filtrar Pedidos</strong> 
+        </div> 
+        <div class="card-body"> 
+            <form wire:submit.prevent="filter"> 
+                <div class="row g-3 align-items-end"> 
+                    <div class="col-md-3"> 
+                        <label class="form-label">Estado</label> 
+                        <select class="form-select" wire:model.defer="statusFilter"> 
+                            <option value="">-- Todos --</option> 
+                            <option value="pendiente">Pendiente</option> 
+                            <option value="pagado">Pagado</option> 
+                            <option value="enviado">Enviado</option> 
+                            <option value="cancelado">Cancelado</option> 
+                            <option value="reembolsado">Reembolsado</option> 
+                        </select> 
+                    </div>
+                     <div class="col-md-3">
+                        <label class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" wire:model.defer="userName" placeholder="Ej: Juan Pérez">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Desde</label>
+                        <input type="date" class="form-control" wire:model.defer="startDate">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Hasta</label>
+                        <input type="date" class="form-control" wire:model.defer="endDate">
+                    </div>
+
+                    <div class="col-12 text-end mt-3">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                        <button type="button" class="btn btn-secondary" wire:click="resetFilters">
+                            <i class="bi bi-x-circle"></i> Limpiar Filtros
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
     @foreach ($orders as $order)
         <div class="card mb-4 shadow-sm">
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center bg-light">

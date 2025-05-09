@@ -37,9 +37,9 @@
     @endif
 
     @if (!auth()->check())
-        <div style="display: flex; justify-content: flex-end;">
-            <div
-                style="font-size: x-small; font-weight: bold; background-color: rgba(0, 0, 0, 0.7); color: rgb(255, 197, 36); border-radius: 10px; padding: 5px 10px;">
+        <div class="d-flex; justify-content-end mt-2">
+            <div class="fw-bold alert alert-warning"
+                style="font-size: x-small; color: black">
                 *Inicia sesión para poder añadir productos al carrito.
             </div>
         </div>

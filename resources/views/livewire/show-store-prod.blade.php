@@ -85,7 +85,7 @@
             <!-- Botones -->
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary">Filtrar</button>
-                <button type="reset" class="btn btn-outline-secondary" wire:click="resetFiltros">Borrar
+                <button type="reset" class="btn btn-outline-secondary" wire:click="resetFilters">Borrar
                     filtros</button>
             </div>
         </form>
@@ -93,55 +93,29 @@
 
 
 
-    <!-- Contenido principal -->
-    <section class="col-md-9">
-        <div class="row">
-            <!-- Fila de productos -->
-            @if ($filters)
-                @foreach ($prodFiltrado as $product)
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <img src="" class="card-img-top" alt="Producto">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">{{ $product->name }}</h5>
-                                <p class="card-text">{{ $product->description }}</p>
+   <!-- Contenido principal -->
+<section class="col-md-9">
+    <div class="row">
+        <!-- Fila de productos -->
+        @foreach ($prodFiltrado ?? $products as $product)
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="" class="card-img-top" alt="Producto">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ $product->name }}</h5>
+                        <p class="card-text">{{ $product->description }}</p>
 
-                                {{-- Las tallas se mostrarán dentro de este componente --}}
-                                <div class="mt-auto">
-                                    <p class="fw-bold fs-5">{{ $product->price }}€</p>
-                                    <a href="{{ route('productos.show', $product->id) }}"
-                                        class="btn btn-outline-primary flex-grow-1">Ver detalles del
-                                        Producto</a>
-                                    <livewire:add-to-cart :product="$product" />
-                                </div>
-                            </div>
+                        {{-- Las tallas se mostrarán dentro de este componente --}}
+                        <p class="fw-bold fs-5">{{ $product->price }}€</p>
+                        <div class="mt-auto">
+                            <livewire:add-to-cart :product="$product" :key="'add-to-cart-'.$product->id.'-'.$loop->index"/>
+                            <a href="{{ route('productos.show', $product->id) }}"
+                               class="btn btn-outline-primary w-100 mt-3">Ver detalles del Producto</a>
                         </div>
                     </div>
-                @endforeach
-            @else
-                @foreach ($products as $product)
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <img src="" class="card-img-top" alt="Producto">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">{{ $product->name }}</h5>
-                                <p class="card-text">{{ $product->description }}</p>
-
-
-                                {{-- Las tallas se mostrarán dentro de este componente --}}
-                                <p class="fw-bold fs-5">{{ $product->price }}€</p>
-                                <div class="mt-auto">
-                                    <livewire:add-to-cart :product="$product" />
-                                    <a href="{{ route('productos.show', $product->id) }}"
-                                        class="btn btn-outline-primary w-100 mt-4">Ver detalles del
-                                        Producto</a>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            @endif
-        </div>
-    </section>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</section>
 </div>

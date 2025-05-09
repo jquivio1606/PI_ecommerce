@@ -9,6 +9,7 @@ Repositorio del Proyecto Integrado de DAW
     - Node.js y NPM: Si utilizas tecnologías de frontend como Vue.js, React, o necesitas compilar archivos CSS/JS.
 
 - **Descargar dependencias:**
+    
     Php: composer install
 
     De frontend: npm install y npm run dev
@@ -20,12 +21,13 @@ Repositorio del Proyecto Integrado de DAW
     php artisan key:generate
 
 - **Configurar la base de datos en .env:**
-    DB_CONNECTION=mysql
-    DB_HOST=127.0.0.1
-    DB_PORT=3306
-    DB_DATABASE=ecommercedb  
-    DB_USERNAME=root         
-    DB_PASSWORD=
+    
+    - DB_CONNECTION=mysql
+    - DB_HOST=127.0.0.1
+    - DB_PORT=3306
+    - DB_DATABASE=ecommercedb 
+    - DB_USERNAME=root 
+    - DB_PASSWORD=
 
 - **Realizar la migración de las tablas:**
     php artisan migrate
@@ -64,3 +66,9 @@ php artisan serve
 
     [Gestión de productos](http://127.0.0.1:8000/productos)  
     [Gestión de pedidos](http://127.0.0.1:8000/pedidos)
+
+
+# PROBLEMAS A SOLUCIONAR:
+
+- **Cuando se filtra 2 veces desaparece los botones o al cosas del add-to-cart**  (SOLUCIONADO)
+- **Al descargar el proyecto del git surgen problemas con las vistas que crea laravel:** No se han descargado bien las dependencias del front, y tengo problema con el vite en otros ordenadores.

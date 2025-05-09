@@ -10,17 +10,17 @@ use App\Models\OrderItem;
 class OrderCrud extends Component
 {
     public $orders;
-    public $statusFilter;
-    public $userName;
-    public $startDate;
-    public $endDate;
-    public $filters = false;
-
     public $totalreturn = []; // Arreglo para almacenar los totales a devolver por pedido
-
+    
     public $message = null;
     public $messageType = 'success'; // 'success', 'error' o 'warning'
     public $showMessage = false;
+    
+    public $statusFilter = '';
+    public $userName = '';
+    public $startDate = '';
+    public $endDate = '';
+    public $filters = false;
 
     public function mount()
     {
