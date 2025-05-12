@@ -8,23 +8,23 @@
     @endif
 
 
-    <div class="card mb-4"> 
-        <div class="card-header bg-light"> 
-            <strong>Filtrar Pedidos</strong> 
-        </div> 
-        <div class="card-body"> 
-            <form wire:submit.prevent="filter"> 
-                <div class="row g-3 align-items-end"> 
-                    <div class="col-md-3"> 
-                        <label class="form-label">Estado</label> 
-                        <select class="form-select" wire:model.defer="statusFilter"> 
-                            <option value="">-- Todos --</option> 
-                            <option value="pendiente">Pendiente</option> 
-                            <option value="pagado">Pagado</option> 
-                            <option value="enviado">Enviado</option> 
-                            <option value="cancelado">Cancelado</option> 
-                            <option value="reembolsado">Reembolsado</option> 
-                        </select> 
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <strong>Filtrar Pedidos</strong>
+        </div>
+        <div class="card-body">
+            <form wire:submit.prevent="filter">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label">Estado</label>
+                        <select class="form-select" wire:model.defer="statusFilter">
+                            <option value="">-- Todos --</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="pagado">Pagado</option>
+                            <option value="enviado">Enviado</option>
+                            <option value="cancelado">Cancelado</option>
+                            <option value="reembolsado">Reembolsado</option>
+                        </select>
                     </div>
                      <div class="col-md-3">
                         <label class="form-label">Nombre de Usuario</label>
@@ -33,12 +33,12 @@
 
                     <div class="col-md-3">
                         <label class="form-label">Desde</label>
-                        <input type="date" class="form-control" wire:model.defer="startDate">
+                        <input type="date" class="form-control" wire:model.defer="startDate" id="startDate">
                     </div>
 
                     <div class="col-md-3">
                         <label class="form-label">Hasta</label>
-                        <input type="date" class="form-control" wire:model.defer="endDate">
+                        <input type="date" class="form-control" wire:model.defer="endDate" min="{{ $startDate }}" id="endDate">
                     </div>
 
                     <div class="col-12 text-end mt-3">

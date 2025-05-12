@@ -7,29 +7,55 @@
         <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-            <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
+            <span class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
                 <x-app-logo />
-            </a>
+            </span>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                <flux:navlist.group :heading="__('Tienda')" class="grid">
+                        <flux:navlist.item class="text-dark text-decoration-none" :href="route('user.index')" :current="request()->routeIs('user.index')" wire:navigate>{{ __('Ir a la Tienda') }}</flux:navlist.item>
                 </flux:navlist.group>
+
+                <br>
+
+                @if (Auth::check() && Auth::user()->role== 1)
+                    <flux:navlist.group :heading="__('Panel de administrador')" class="grid">
+                        <flux:navlist.item  icon="home" class="text-dark text-decoration-none" :href="route('admin.dashboard')" :current="request()->routeIs('admin.dashboard')" wire:navigate>{{ __('Panel de administrador') }}</flux:navlist.item>
+                    </flux:navlist.group>
+
+                    <br>
+
+                    <flux:navlist.group :heading="__('Opciones de administrador')" class="grid">
+                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2" :href="route('admin.product')" :current="request()->routeIs('admin.product')" wire:navigate>
+                            <i class="bi bi-box-seam me-2"></i> {{ __('Información Productos') }}
+                        </flux:navlist.item>
+
+                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2" :href="route('admin.order')" :current="request()->routeIs('admin.order')" wire:navigate>
+                            <i class="bi bi-cart-check me-2"></i> {{ __('Información Pedidos') }}
+                        </flux:navlist.item>
+                    </flux:navlist.group>
+                @else
+                    <flux:navlist.group :heading="__('Perfil')" class="grid">
+                        <flux:navlist.item  icon="home" class="text-dark text-decoration-none" :href="route('user.profile')" :current="request()->routeIs('user.profile')" wire:navigate>{{ __('Perfil') }}</flux:navlist.item>
+                    </flux:navlist.group>
+
+                    <br>
+
+                    <flux:navlist.group :heading="__('Información del usuario')" class="grid">
+                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2" :href="route('user.orders')" :current="request()->routeIs('user.orders')" wire:navigate>
+                            <i class="bi bi-cart-check me-2"></i> {{ __('Mis Pedidos') }}
+                        </flux:navlist.item>
+
+                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2" :href="route('admin.product')" :current="request()->routeIs('admin.product')" wire:navigate>
+                            <i class="bi bi-box-seam me-2"></i> {{ __('Información Productos') }}
+                        </flux:navlist.item>
+                    </flux:navlist.group>
+                @endif
             </flux:navlist>
 
             <flux:spacer />
 
-            <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
-            </flux:navlist>
-
-            <!-- Desktop User Menu -->
+            <!-- Menú de usuario de escritorio -->
             <flux:dropdown position="bottom" align="start">
                 <flux:profile
                     :name="auth()->user()->name"
@@ -60,7 +86,7 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item class="text-dark text-decoration-none" :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Configuración') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -68,14 +94,14 @@
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            {{ __('Cerrar sesión') }}
                         </flux:menu.item>
                     </form>
                 </flux:menu>
             </flux:dropdown>
         </flux:sidebar>
 
-        <!-- Mobile User Menu -->
+        <!-- Menú de usuario móvil -->
         <flux:header class="lg:hidden">
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
@@ -110,7 +136,7 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item class="text-dark text-decoration-none" :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Configuración') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -118,7 +144,7 @@
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            {{ __('Cerrar sesión') }}
                         </flux:menu.item>
                     </form>
                 </flux:menu>

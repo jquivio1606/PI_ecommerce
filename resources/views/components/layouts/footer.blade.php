@@ -3,9 +3,9 @@
     <div class="container text-center">
         <!-- Enlaces -->
         <div class="mb-2">
-            <a href="#" class="mx-3 text-decoration-none text-dark">Contacto</a> |
-            <a href="#" class="mx-3 text-decoration-none text-dark">Aviso legal - Privacidad</a> |
-            <a href="#" class="mx-3 text-decoration-none text-dark">Accesibilidad</a>
+            <a href="{{ route ('contact') }}" class="mx-3 text-decoration-none text-dark">Contacto</a> |
+            <a href="{{ route ('legalNotice') }}" class="mx-3 text-decoration-none text-dark">Aviso legal - Privacidad</a> |
+            <a href="{{ route ('accessibility') }}" class="mx-3 text-decoration-none text-dark">Accesibilidad</a>
         </div>
         <!-- Redes -->
         <div>

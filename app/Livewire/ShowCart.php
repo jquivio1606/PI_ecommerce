@@ -19,8 +19,8 @@ class ShowCart extends Component
     public function mount()
     {
         $user = auth()->user();
+
         $cart = $user->cart;
-        $this->showMessage = false;
 
         if (!$cart) {
             // Si no existe carrito, creamos uno vacío para el usuario
@@ -35,6 +35,7 @@ class ShowCart extends Component
 
         $this->updateTotal();
     }
+
 
     // Método que se llama cuando se selecciona o deselecciona un producto
     public function itemSelection($itemId)

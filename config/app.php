@@ -2,6 +2,15 @@
 
 return [
 
+    'middleware' => [
+        // otros middlewares
+        \App\Http\Middleware\UserControl::class, // Asegúrate de incluir tu middleware aquí
+    ],
+
+
+    'locale' => 'es',
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -77,8 +86,6 @@ return [
     | set to any locale for which you plan to have translation strings.
     |
     */
-
-    'locale' => env('APP_LOCALE', 'en'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 

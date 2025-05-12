@@ -13,6 +13,9 @@
 
 
     @if ($view === 'list')
+
+        <h2 class="mb-5 my-4 text-center">Ver datos de los Productos</h2>
+
         <form wire:submit.prevent="filter" class="d-flex justify-content-between mb-3 gap-3">
             <input type="text" wire:model="name" placeholder="Buscar por nombre" class="form-control form-control-sm" />
             <input type="number" wire:model="product_id" placeholder="Buscar por ID"
@@ -120,42 +123,65 @@
             </table>
         </div>
     @else
+        <h2 class="mb-5 my-4 text-center"> {{ $product_id ? 'Actualizar' : 'Crear' }} Productos</h2>
+
         <form wire:submit.prevent="{{ $product_id ? 'update' : 'store' }}" class="row g-3">
             <div class="col-md-6">
-                <input type="text" wire:model="name" placeholder="Nombre" class="form-control form-control-sm">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" id="name" wire:model="name" class="form-control form-control-sm"
+                    placeholder="Nombre">
             </div>
+
             <div class="col-md-6">
-                <input type="text" wire:model="description" placeholder="Descripción"
-                    class="form-control form-control-sm">
+                <label for="description" class="form-label">Descripción</label>
+                <input type="text" id="description" wire:model="description" class="form-control form-control-sm"
+                    placeholder="Descripción">
             </div>
+
             <div class="col-md-6">
-                <input type="text" wire:model="color" placeholder="Color" class="form-control form-control-sm">
+                <label for="color" class="form-label">Color</label>
+                <input type="text" id="color" wire:model="color" class="form-control form-control-sm"
+                    placeholder="Color">
             </div>
+
             <div class="col-md-6">
-                <input type="text" wire:model="gender" placeholder="Género" class="form-control form-control-sm">
+                <label for="gender" class="form-label">Género</label>
+                <input type="text" id="gender" wire:model="gender" class="form-control form-control-sm"
+                    placeholder="Género">
             </div>
+
             <div class="col-md-6">
-                <input type="text" wire:model="style" placeholder="Estilo" class="form-control form-control-sm">
+                <label for="style" class="form-label">Estilo</label>
+                <input type="text" id="style" wire:model="style" class="form-control form-control-sm"
+                    placeholder="Estilo">
             </div>
+
             <div class="col-md-6">
-                <input type="text" wire:model="category" placeholder="Categoría"
-                    class="form-control form-control-sm">
+                <label for="category" class="form-label">Categoría</label>
+                <input type="text" id="category" wire:model="category" class="form-control form-control-sm"
+                    placeholder="Categoría">
             </div>
+
             <div class="col-md-6">
-                <input type="number" wire:model="price" placeholder="Precio" step="0.01"
-                    class="form-control form-control-sm">
+                <label for="price" class="form-label">Precio</label>
+                <input type="number" id="price" wire:model="price" class="form-control form-control-sm"
+                    placeholder="Precio" step="0.01">
             </div>
 
             <div class="col-12">
-                <h5 class="mb-2">Asignar Stock por Talla</h5>
-                @foreach ($availableSizes as $size)
-                    <div class="mb-2 d-flex align-items-center">
-                        <label class="me-2">{{ $size->name }}</label>
-                        <input type="number" wire:model="sizes.{{ $size->id }}"
-                            class="form-control form-control-sm" placeholder="Stock para esta talla" min="0">
-                    </div>
-                @endforeach
+                <h5 class="mb-3">Asignar Stock por Talla</h5>
+                <div class="d-flex flex-wrap gap-3">
+                    @foreach ($availableSizes as $size)
+                        <div class="d-flex align-items-center mb-2">
+                            <label for="size-{{ $size->id }}" class="form-label mb-0 me-2" style="min-width: fit-content;">{{ $size->name }}</label>
+                            <input type="number" id="size-{{ $size->id }}" wire:model="sizes.{{ $size->id }}"
+                                class="form-control form-control-sm me-4" placeholder="Stock" min="0" style="width: 80px;">
+                        </div>
+                    @endforeach
+                </div>
             </div>
+
+
 
             <div class="col-12 d-flex gap-2">
                 <button type="submit" class="btn btn-primary btn-sm">
@@ -164,6 +190,7 @@
                 <button type="button" wire:click="cancel" class="btn btn-secondary btn-sm">Cancelar</button>
             </div>
         </form>
+
     @endif
 
 </div>

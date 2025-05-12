@@ -1,4 +1,3 @@
-<x-layouts.base metaTitle="CRUD - Productos (Administrador)" tituloSeccion="CRUD - Productos (Administrador)">
-
+<x-layouts.app :title="__('Información Productos')">
     @livewire('product-crud')
-</x-layouts.base>
+</x-layouts.app>

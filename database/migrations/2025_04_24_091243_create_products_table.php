@@ -21,7 +21,6 @@ return new class extends Migration {
             $table->integer('stock')->default(0);
             $table->string('category')->nullable();
             $table->decimal('price', 8, 2);
-            $table->timestamp('create_at')->useCurrent();
             $table->timestamps();
         });
 

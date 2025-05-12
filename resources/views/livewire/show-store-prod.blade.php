@@ -93,29 +93,32 @@
 
 
 
-   <!-- Contenido principal -->
-<section class="col-md-9">
-    <div class="row">
-        <!-- Fila de productos -->
-        @foreach ($prodFiltrado ?? $products as $product)
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="" class="card-img-top" alt="Producto">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ $product->name }}</h5>
-                        <p class="card-text">{{ $product->description }}</p>
+    <!-- Contenido principal -->
+    <section class="col-md-9">
+        <div class="row">
+            <!-- Fila de productos -->
+            @foreach ($prodFiltrado ?? $products as $product)
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <!-- Mostrar la primera imagen -->
+                        <img src="{{ $product->images->first()->url ?? 'default-image-url.jpg' }}" class="card-img-top"
+                            alt="{{ $product->name }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ $product->name }}</h5>
+                            <p class="card-text">{{ $product->description }}</p>
 
-                        {{-- Las tallas se mostrarán dentro de este componente --}}
-                        <p class="fw-bold fs-5">{{ $product->price }}€</p>
-                        <div class="mt-auto">
-                            <livewire:add-to-cart :product="$product" :key="'add-to-cart-'.$product->id.'-'.$loop->index"/>
-                            <a href="{{ route('productos.show', $product->id) }}"
-                               class="btn btn-outline-primary w-100 mt-3">Ver detalles del Producto</a>
+                            {{-- Las tallas se mostrarán dentro de este componente --}}
+                            <p class="fw-bold fs-5">{{ $product->price }}€</p>
+                            <div class="mt-auto">
+                                <livewire:add-to-cart :product="$product" :key="'add-to-cart-' . $product->id . '-' . $loop->index" />
+                                <a href="{{ route('productos.show', $product->id) }}"
+                                    class="btn btn-outline-primary w-100 mt-3">Ver detalles del Producto</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
-</section>
+            @endforeach
+
+        </div>
+    </section>
 </div>
