@@ -12,7 +12,8 @@ Repositorio del Proyecto Integrado de DAW
     
     Php: composer install
 
-    De frontend: npm install y npm run dev
+    ## IMPORTANTÍSIMO:
+    No poner npm run build, porque se te rompe to la vista.
 
 - **Crear el archivo .env**
     cp .env.example .env (si existe el archivo .env.example)

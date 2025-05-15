@@ -25,6 +25,7 @@ class ShowStoreProd extends Component
 
     public $orderBy;
 
+    public $onlyOffers = false;
 
     public $prodFiltrado;
     public $filters = false;
@@ -47,73 +48,80 @@ class ShowStoreProd extends Component
         $this->availableSizes = Size::all();
     }
 
- public function filter()
-{
-    // Inicializamos la consulta
-    $query = Product::query();
+    public function filter()
+    {
+        // Inicializamos la consulta
+        $query = Product::query();
 
-    $this->filters = false;
-    $this->prodFiltrado = null;
-
-    // Género
-    if (!empty($this->gender)) {
-        $query->where('gender', $this->gender);
-        $this->filters = true;
-    }
-
-    // Categorías (pueden ser múltiples)
-    if (!empty($this->categories)) {
-        $query->whereIn('category', $this->categories);
-        $this->filters = true;
-    }
-
-    // Color
-    if (!empty($this->color)) {
-        $query->where('color', $this->color);
-        $this->filters = true;
-    }
-
-    // Estilo
-    if (!empty($this->style)) {
-        $query->where('style', $this->style);
-        $this->filters = true;
-    }
-
-    // Precio mínimo
-    if (!empty($this->priceMin)) {
-        $query->where('price', '>=', $this->priceMin);
-        $this->filters = true;
-    }
-
-    // Precio máximo
-    if (!empty($this->priceMax)) {
-        $query->where('price', '<=', $this->priceMax);
-        $this->filters = true;
-    }
-
-    // Filtro por tallas (relación many-to-many)
-    if (!empty($this->sizes)) {
-        $query->whereHas('sizes', function ($q) {
-            $q->whereIn('name', $this->sizes);
-        });
-        $this->filters = true;
-    }
-
-    // Comprobamos si se aplicaron filtros
-    if (!$this->filters) {
-        session()->flash('error', 'Introduce algún dato para filtrar');
-        $this->prodFiltrado = [];
-        return;
-    }
-
-    // Ejecutamos la consulta y almacenamos el resultado
-    $this->prodFiltrado = $query->get();
-
-    if ($this->prodFiltrado->isEmpty()) {
-        session()->flash('error', 'No se ha encontrado ningún producto con esas características.');
         $this->filters = false;
+        $this->prodFiltrado = null;
+
+        // Género
+        if (!empty($this->gender)) {
+            $query->where('gender', $this->gender);
+            $this->filters = true;
+        }
+
+        // Categorías (pueden ser múltiples)
+        if (!empty($this->categories)) {
+            $query->whereIn('category', $this->categories);
+            $this->filters = true;
+        }
+
+        // Color
+        if (!empty($this->color)) {
+            $query->where('color', $this->color);
+            $this->filters = true;
+        }
+
+        // Estilo
+        if (!empty($this->style)) {
+            $query->where('style', $this->style);
+            $this->filters = true;
+        }
+
+        // Precio mínimo
+        if (!empty($this->priceMin)) {
+            $query->where('price', '>=', $this->priceMin);
+            $this->filters = true;
+        }
+
+        // Precio máximo
+        if (!empty($this->priceMax)) {
+            $query->where('price', '<=', $this->priceMax);
+            $this->filters = true;
+        }
+
+        // Filtro por tallas (relación many-to-many)
+        if (!empty($this->sizes)) {
+            $query->whereHas('sizes', function ($q) {
+                $q->whereIn('name', $this->sizes);
+            });
+            $this->filters = true;
+        }
+
+        // Ofertas (productos con discount > 0)
+        if ($this->onlyOffers) {
+            $query->where('discount', '>', 0);
+            $this->filters = true;
+        }
+
+
+        // Comprobamos si se aplicaron filtros
+        if (!$this->filters) {
+            session()->flash('error', 'Introduce algún dato para filtrar');
+            $this->prodFiltrado = [];
+            return;
+        }
+
+        // Ejecutamos la consulta y almacenamos el resultado
+        $this->prodFiltrado = $query->get();
+
+        if ($this->prodFiltrado->isEmpty()) {
+            session()->flash('error', 'No se ha encontrado ningún producto con esas características.');
+            $this->filters = false;
+        }
     }
-}
 
     public function resetFilters()
     {

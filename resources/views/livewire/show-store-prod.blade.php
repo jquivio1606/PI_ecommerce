@@ -82,6 +82,18 @@
                     min="0" step="0.01">
             </div>
 
+            <!-- Ofertas -->
+            <div class="mb-4">
+                <h5>Ofertas</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" wire:model="onlyOffers" id="onlyOffers">
+                    <label class="form-check-label" for="onlyOffers">
+                        Mostrar solo productos en oferta
+                    </label>
+                </div>
+            </div>
+
+
             <!-- Botones -->
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary">Filtrar</button>
@@ -107,8 +119,17 @@
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">{{ $product->description }}</p>
 
-                            {{-- Las tallas se mostrarán dentro de este componente --}}
-                            <p class="fw-bold fs-5">{{ $product->price }}€</p>
+                            @if ($product->discount > 0)
+                                <p>
+                                    <span
+                                        class="text-muted text-decoration-line-through">{{ number_format($product->price, 2) }}€</span>
+                                    <span
+                                        class="fw-bold fs-5 text-danger ms-2">{{ number_format(($product->price - ($product->price * $product->discount) / 100), 2) }}€</span>
+                                </p>
+                            @else
+                                <p class="fw-bold fs-5">{{ number_format($product->price, 2) }}€</p>
+                            @endif
+
                             <div class="mt-auto">
                                 <livewire:add-to-cart :product="$product" :key="'add-to-cart-' . $product->id . '-' . $loop->index" />
                                 <a href="{{ route('productos.show', $product->id) }}"

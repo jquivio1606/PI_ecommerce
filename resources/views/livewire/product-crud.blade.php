@@ -43,12 +43,10 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th>Color</th>
-                        <th>Género</th>
-                        <th>Estilo</th>
+                        <th>Características</th>
                         <th>Tallas</th>
                         <th>Stock</th>
-                        <th>Categoría</th>
+                        <th>Rebaja</th>
                         <th>Precio</th>
                         <th>Acciones</th>
                     </tr>
@@ -61,9 +59,12 @@
                                     <td>{{ $product->id }}</td>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->description }}</td>
-                                    <td>{{ $product->color }}</td>
-                                    <td>{{ $product->gender }}</td>
-                                    <td>{{ $product->style }}</td>
+                                    <td>
+                                        <p>Categoría: {{ $product->category }}</p>
+                                        <p>Color: {{ $product->color }}</p>
+                                        <p>Género: {{ $product->gender }}</p>
+                                        <p>Estilo: {{ $product->style }}</p>
+                                    </td>
                                     <td>
                                         @foreach ($product->sizes as $size)
                                             <div>{{ $size->name }}</div>
@@ -74,8 +75,19 @@
                                             <div>{{ $size->pivot->stock }}</div>
                                         @endforeach
                                     </td>
-                                    <td>{{ $product->category }}</td>
-                                    <td>{{ $product->price }}€</td>
+                                    <td>{{ $product->discount }}%</td>
+                                    <td>
+                                        @if ($product->discount > 0)
+                                            <span style="text-decoration: line-through; color: gray;">
+                                                {{ number_format($product->price, 2) }}€
+                                            </span>
+                                            <span style="color: red; font-weight: bold;">
+                                                {{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}€
+                                            </span>
+                                        @else
+                                            {{ number_format($product->price, 2) }}€
+                                        @endif
+                                    </td>
                                     <td>
                                         <button wire:click="edit({{ $product->id }})"
                                             class="btn btn-warning btn-sm mt-2"><i class="bi bi-pencil"></i></button>
@@ -94,9 +106,12 @@
                                 <td>{{ $product->id }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->description }}</td>
-                                <td>{{ $product->color }}</td>
-                                <td>{{ $product->gender }}</td>
-                                <td>{{ $product->style }}</td>
+                                <td>
+                                    <p>Categoría: {{ $product->category }}</p>
+                                    <p>Color: {{ $product->color }}</p>
+                                    <p>Género: {{ $product->gender }}</p>
+                                    <p>Estilo: {{ $product->style }}</p>
+                                </td>
                                 <td>
                                     @foreach ($product->sizes as $size)
                                         <div>{{ $size->name }}</div>
@@ -107,8 +122,23 @@
                                         <div>{{ $size->pivot->stock }}</div>
                                     @endforeach
                                 </td>
-                                <td>{{ $product->category }}</td>
-                                <td>{{ $product->price }}€</td>
+                                @if ($product->discount <= 0)
+                                    <td>No tiene rebaja</td>
+                                @else
+                                    <td>{{ $product->discount }}%</td>
+                                @endif
+                                <td>
+                                    @if ($product->discount > 0)
+                                        <span style="text-decoration: line-through; color: gray;">
+                                            {{ number_format($product->price, 2) }}€
+                                        </span>
+                                        <span style="color: red; font-weight: bold;">
+                                            {{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}€
+                                        </span>
+                                    @else
+                                        {{ number_format($product->price, 2) }}€
+                                    @endif
+                                </td>
                                 <td>
                                     <button wire:click="edit({{ $product->id }})"
                                         class="btn btn-warning btn-sm mt-2"><i class="bi bi-pencil"></i></button>
@@ -173,9 +203,11 @@
                 <div class="d-flex flex-wrap gap-3">
                     @foreach ($availableSizes as $size)
                         <div class="d-flex align-items-center mb-2">
-                            <label for="size-{{ $size->id }}" class="form-label mb-0 me-2" style="min-width: fit-content;">{{ $size->name }}</label>
-                            <input type="number" id="size-{{ $size->id }}" wire:model="sizes.{{ $size->id }}"
-                                class="form-control form-control-sm me-4" placeholder="Stock" min="0" style="width: 80px;">
+                            <label for="size-{{ $size->id }}" class="form-label mb-0 me-2"
+                                style="min-width: fit-content;">{{ $size->name }}</label>
+                            <input type="number" id="size-{{ $size->id }}"
+                                wire:model="sizes.{{ $size->id }}" class="form-control form-control-sm me-4"
+                                placeholder="Stock" min="0" style="width: 80px;">
                         </div>
                     @endforeach
                 </div>

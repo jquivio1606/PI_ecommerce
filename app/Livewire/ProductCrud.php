@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class ProductCrud extends Component
 {
-    public $products, $product_id, $name, $description, $color, $gender, $style, $category, $price;
+    public $products, $product_id, $name, $description, $color, $gender, $style, $category, $price, $discount;
 
     public $sizes = []; // array para asociar tamaños y stocks
     public $availableSizes; // lista de todas las tallas
@@ -160,6 +160,7 @@ class ProductCrud extends Component
             'style' => $this->style,
             'category' => $this->category,
             'price' => $this->price,
+            'discount' => $this->discount,
         ];
     }
 

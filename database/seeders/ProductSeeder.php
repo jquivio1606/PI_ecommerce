@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
             Size::create(['name' => $size]);
         }
 
-        $sizes = Size::all(); // asegúrate de tener tallas creadas previamente
+        $sizes = Size::all();
 
         $products = [
             ['name' => 'Camiseta Relax', 'description' => 'Camiseta cómoda de algodón 100% para cualquier ocasión casual.', 'category' => 'Camisetas', 'gender' => 'Unisex', 'style' => 'Casual', 'color' => 'Rojo', 'price' => 19.99],
@@ -45,7 +45,16 @@ class ProductSeeder extends Seeder
             ['name' => 'Botas Altas', 'description' => 'Botas altas de cuero con detalle de hebillas, para el invierno.', 'category' => 'Zapatos', 'gender' => 'Mujer', 'style' => 'Elegante', 'color' => 'Negro', 'price' => 120.00]
         ];
 
+        $discounts = [5, 10, 15, 20, 30, 50, 75, 90];
+        $index = 0;
+
         foreach ($products as $productData) {
+            $discount = null;
+            if ($index < count($discounts)) {
+                $discount = $discounts[$index];
+                $index++;
+            }
+
             $product = Product::create([
                 'name' => $productData['name'],
                 'description' => $productData['description'],
@@ -54,6 +63,7 @@ class ProductSeeder extends Seeder
                 'style' => $productData['style'],
                 'category' => $productData['category'],
                 'price' => $productData['price'],
+                'discount' => $discount,
             ]);
 
             $assignedSizes = $sizes->random(rand(1, $sizes->count()));
@@ -76,5 +86,3 @@ class ProductSeeder extends Seeder
         }
     }
 }
-
-
