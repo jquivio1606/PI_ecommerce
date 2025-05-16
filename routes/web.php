@@ -50,7 +50,7 @@ Route::middleware(['auth', 'role:1'])->group(function () {
     })->name('admin.dashboard');
 
 
-// VISTAS CRUD DE PRODUCTO
+    // Vista Crud de Producto
     Route::get('/admin/productos', function () {
         return view('admin.product');
     })->name('admin.product');
@@ -58,6 +58,11 @@ Route::middleware(['auth', 'role:1'])->group(function () {
     Route::get('/admin/pedidos', function () {
         return view('admin.order');
     })->name('admin.order');
+
+    Route::get('/admin/usuarios', function () {
+        return view('admin.users');
+    })->name('admin.users');
+
 });
 
 

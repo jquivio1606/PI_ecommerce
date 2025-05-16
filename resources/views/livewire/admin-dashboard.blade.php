@@ -40,7 +40,7 @@
             class="bg-white dark:bg-neutral-900 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
             <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Usuarios Registrados</h3>
             <p class="text-sm text-gray-600 dark:text-gray-300">Total de usuarios: {{ $users->count() }}</p>
-            <a href="" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium mt-2 inline-block">Ver
+            <a href="{{ route('admin.users')}}" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium mt-2 inline-block">Ver
                 usuarios</a>
         </div>
     </div>

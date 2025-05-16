@@ -11,16 +11,15 @@ class OrderCrud extends Component
 {
     public $orders;
     public $totalreturn = []; // Arreglo para almacenar los totales a devolver por pedido
-    
+
     public $message = null;
     public $messageType = 'success'; // 'success', 'error' o 'warning'
     public $showMessage = false;
-    
+
     public $statusFilter = '';
     public $userName = '';
     public $startDate = '';
     public $endDate = '';
-    public $filters = false;
 
     public function mount()
     {
@@ -42,7 +41,6 @@ class OrderCrud extends Component
         // Filtro por estado
         if (!empty($this->statusFilter)) {
             $query->where('status', $this->statusFilter);
-            $this->filters = true;
         }
 
         // Filtro por nombre de usuario
@@ -50,13 +48,11 @@ class OrderCrud extends Component
             $query->whereHas('user', function ($query) {
                 $query->where('name', 'like', '%' . $this->userName . '%');
             });
-            $this->filters = true;
         }
 
         // Filtro por fechas
         if (!empty($this->startDate) && !empty($this->endDate)) {
             $query->whereBetween('created_at', [$this->startDate, $this->endDate]);
-            $this->filters = true;
         }
 
         // Actualizamos la variable de órdenes con los resultados filtrados
@@ -65,13 +61,11 @@ class OrderCrud extends Component
         // Si no hay resultados
         if ($this->orders->isEmpty()) {
             session()->flash('error', 'No se encontraron pedidos con los filtros aplicados');
-            $this->filters = false;
         }
     }
 
     public function resetFilters()
     {
-        $this->filters = false;
         $this->statusFilter = '';
         $this->userName = '';
         $this->startDate = '';

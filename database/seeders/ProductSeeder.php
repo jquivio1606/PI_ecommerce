@@ -14,11 +14,17 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-
-        foreach ($sizes as $size) {
+        // Tallas de ropa
+        $clothingSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+        foreach ($clothingSizes as $size) {
             Size::create(['name' => $size]);
         }
+
+        // Tallas de zapatos del 16 al 50
+        for ($i = 36; $i <= 45; $i++) {
+            Size::create(['name' => (string) $i]);
+        }
+
 
         $sizes = Size::all();
 

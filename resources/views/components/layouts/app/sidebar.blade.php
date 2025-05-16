@@ -33,6 +33,10 @@
                         <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2" :href="route('admin.order')" :current="request()->routeIs('admin.order')" wire:navigate>
                             <i class="bi bi-cart-check me-2"></i> {{ __('Información Pedidos') }}
                         </flux:navlist.item>
+
+                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>
+                            <i class="bi bi-box-seam me-2"></i> {{ __('Información Usuarios') }}
+                        </flux:navlist.item>
                     </flux:navlist.group>
                 @else
                     <flux:navlist.group :heading="__('Perfil')" class="grid">
@@ -44,10 +48,6 @@
                     <flux:navlist.group :heading="__('Información del usuario')" class="grid">
                         <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2" :href="route('user.orders')" :current="request()->routeIs('user.orders')" wire:navigate>
                             <i class="bi bi-cart-check me-2"></i> {{ __('Mis Pedidos') }}
-                        </flux:navlist.item>
-
-                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2" :href="route('admin.product')" :current="request()->routeIs('admin.product')" wire:navigate>
-                            <i class="bi bi-box-seam me-2"></i> {{ __('Información Productos') }}
                         </flux:navlist.item>
                     </flux:navlist.group>
                 @endif

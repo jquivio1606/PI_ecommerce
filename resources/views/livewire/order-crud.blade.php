@@ -1,12 +1,6 @@
-<div class="container my-4">
+<div>
 
-    @if ($showMessage)
-        <div
-            class="alert alert-{{ $messageType == 'success' ? 'success' : ($messageType == 'warning' ? 'warning' : 'danger') }} mb-4">
-            {{ $message }}
-        </div>
-    @endif
-
+    <h2 class="mb-5 my-4 text-center">Ver Pedidos</h2>
 
     <div class="card mb-4">
         <div class="card-header bg-light">
@@ -26,9 +20,10 @@
                             <option value="reembolsado">Reembolsado</option>
                         </select>
                     </div>
-                     <div class="col-md-3">
+                    <div class="col-md-3">
                         <label class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" wire:model.defer="userName" placeholder="Ej: Juan Pérez">
+                        <input type="text" class="form-control" wire:model.defer="userName"
+                            placeholder="Ej: Juan Pérez">
                     </div>
 
                     <div class="col-md-3">
@@ -38,15 +33,16 @@
 
                     <div class="col-md-3">
                         <label class="form-label">Hasta</label>
-                        <input type="date" class="form-control" wire:model.defer="endDate" min="{{ $startDate }}" id="endDate">
+                        <input type="date" class="form-control" wire:model.defer="endDate" min="{{ $startDate }}"
+                            id="endDate">
                     </div>
 
                     <div class="col-12 text-end mt-3">
                         <button type="submit" class="btn btn-primary me-2">
-                            <i class="bi bi-search"></i> Buscar
+                            <i class="bi bi-search"></i> Filtrar
                         </button>
                         <button type="button" class="btn btn-secondary" wire:click="resetFilters">
-                            <i class="bi bi-x-circle"></i> Limpiar Filtros
+                            <i class="bi bi-x-circle"></i> Borrar Filtros
                         </button>
                     </div>
                 </div>
@@ -54,7 +50,12 @@
         </div>
     </div>
 
-
+    @if ($showMessage)
+        <div
+            class="alert alert-{{ $messageType == 'success' ? 'success' : ($messageType == 'warning' ? 'warning' : 'danger') }} mb-4">
+            {{ $message }}
+        </div>
+    @endif
 
     @foreach ($orders as $order)
         <div class="card mb-4 shadow-sm">
@@ -73,7 +74,8 @@
                         <option value="enviado" {{ $order->status === 'enviado' ? 'selected' : '' }}>Enviado</option>
                         <option value="cancelado" {{ $order->status === 'cancelado' ? 'selected' : '' }}>Cancelado
                         </option>
-                        <option value="reembolsado" {{ $order->status === 'reembolsado' ? 'selected' : '' }}>Reembolsado
+                        <option value="reembolsado" {{ $order->status === 'reembolsado' ? 'selected' : '' }}>
+                            Reembolsado
                         </option>
                     </select>
                 </div>
@@ -103,7 +105,8 @@
                 @endforeach
                 @if (isset($totalreturn[$order->id]))
                     <div class="mt-2 d-flex justify-content-between">
-                        <span><strong>Total a devolver: </strong>€{{ number_format($totalreturn[$order->id], 2) }}</span>
+                        <span><strong>Total a devolver:
+                            </strong>€{{ number_format($totalreturn[$order->id], 2) }}</span>
                         <button class="btn btn-warning btn-sm" wire:click="returned({{ $order->id }})">
                             <i class="bi bi-coin"></i> Devolver dinero
                         </button>

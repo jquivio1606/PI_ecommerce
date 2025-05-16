@@ -10,64 +10,77 @@ class ProductCrud extends Component
 {
     public $products, $product_id, $name, $description, $color, $gender, $style, $category, $price, $discount;
 
+    public $categories = [];
+
     public $sizes = []; // array para asociar tamaños y stocks
     public $availableSizes; // lista de todas las tallas
+    public $allSizes; // todas las tallas sin filtrar
+
     public $view = 'list';
 
-    public $prodFiltrado = [];
-    public $filters = false;
-    public function filter()
+    public function render()
     {
-        // Si no se ha introducido ningún dato de búsqueda
-        if (empty($this->search) && empty($this->product_id) && empty($this->name)) {
-            session()->flash('error', 'Introduce algún dato de búsqueda');
-            $this->prodFiltrado = [];
-            $this->filters = false;
-            return;
-        }
-
-        // Inicializamos la consulta
-        $query = Product::query();
-
-        // Filtro por ID si se ha indicado
-        if (!empty($this->product_id)) {
-            $query->where('id', $this->product_id);
-            $this->filters = true;
-        }
-
-        // Filtro por nombre si se ha indicado
-        if (!empty($this->name)) {
-            $query->where('name', 'like', '%' . $this->name . '%');
-            $this->filters = true;
-        }
-
-        // Guardamos los productos filtrados
-        $this->prodFiltrado = $query->get();
-
-        // Si no hay resultados
-        if ($this->prodFiltrado->isEmpty()) {
-            session()->flash('error', 'Producto no encontrado');
-            $this->filters = false;
-
-        }
-    }
-
-    public function resetFilters()
-    {
-        $this->filters = false;
-        $this->name = '';
-        $this->product_id = '';
+        return view('livewire.product-crud');
     }
 
 
     public function mount()
     {
-        $this->availableSizes = \App\Models\Size::all();
-    }
-    public function render()
-    {
         $this->products = Product::all();
-        return view('livewire.product-crud');
+        $this->allSizes = \App\Models\Size::all();
+        $this->filterSizes();
+        $this->categories = Product::distinct()->pluck('category')->toArray();
+    }
+
+    public function filter()
+    {
+        if (empty($this->product_id) && empty($this->name)) {
+            session()->flash('error', 'Introduce algún dato de búsqueda');
+            $this->products = Product::all();
+            return;
+        }
+
+        $query = Product::query();
+
+        if (!empty($this->product_id)) {
+            $query->where('id', $this->product_id);
+        }
+
+        if (!empty($this->name)) {
+            $query->where('name', 'like', '%' . $this->name . '%');
+        }
+
+        $this->products = $query->get();
+
+        if ($this->products->isEmpty()) {
+            session()->flash('error', 'Producto no encontrado');
+            $this->products = Product::all();
+        }
+    }
+
+    public function resetFilters()
+    {
+        $this->name = '';
+        $this->product_id = '';
+        $this->products = Product::all();
+    }
+
+    public function filterSizes()
+    {
+        if (strtolower($this->category) === 'zapatos') {
+            $this->availableSizes = $this->allSizes->filter(function ($size) {
+                return is_numeric($size->name);
+            });
+        } else {
+            $this->availableSizes = $this->allSizes->filter(function ($size) {
+                return in_array(strtolower($size->name), ['xs', 's', 'm', 'l', 'xl']);
+            });
+        }
+    }
+
+    public function updatedCategory()
+    {
+        $this->filterSizes();
     }
 
     public function resetInputs()
@@ -89,11 +102,12 @@ class ProductCrud extends Component
         $this->product_id = $product->id;
         $this->fill($product->toArray());
 
-        // Rellenar el array con los stocks de tallas
         $this->sizes = $product->sizes->pluck('pivot.stock', 'id')->toArray();
 
+        $this->filterSizes(); // actualizar tallas según la categoría
         $this->view = 'form';
     }
+
 
     public function store()
     {
