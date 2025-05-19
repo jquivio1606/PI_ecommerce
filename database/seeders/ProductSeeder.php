@@ -9,9 +9,6 @@ use App\Models\Image;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         // Tallas de ropa
@@ -20,13 +17,15 @@ class ProductSeeder extends Seeder
             Size::create(['name' => $size]);
         }
 
-        // Tallas de zapatos del 16 al 50
+        // Tallas de zapatos del 36 al 45
         for ($i = 36; $i <= 45; $i++) {
             Size::create(['name' => (string) $i]);
         }
 
-
+        // Obtener todas las tallas
         $sizes = Size::all();
+        $shoeSizes = $sizes->filter(fn($s) => is_numeric($s->name));
+        $clothingSizes = $sizes->filter(fn($s) => !is_numeric($s->name));
 
         $products = [
             ['name' => 'Camiseta Relax', 'description' => 'Camiseta cómoda de algodón 100% para cualquier ocasión casual.', 'category' => 'Camisetas', 'gender' => 'Unisex', 'style' => 'Casual', 'color' => 'Rojo', 'price' => 19.99],
@@ -72,7 +71,8 @@ class ProductSeeder extends Seeder
                 'discount' => $discount,
             ]);
 
-            $assignedSizes = $sizes->random(rand(1, $sizes->count()));
+            $sizePool = $productData['category'] === 'Zapatos' ? $shoeSizes : $clothingSizes;
+            $assignedSizes = $sizePool->random(rand(1, $sizePool->count()));
 
             foreach ($assignedSizes as $size) {
                 $product->sizes()->attach($size->id, [
@@ -83,7 +83,6 @@ class ProductSeeder extends Seeder
             $numberOfImages = rand(1, 3);
             for ($j = 0; $j < $numberOfImages; $j++) {
                 $imageUrl = 'https://picsum.photos/seed/' . rand(1, 1000) . '/200/200';
-
                 Image::create([
                     'product_id' => $product->id,
                     'url' => $imageUrl,

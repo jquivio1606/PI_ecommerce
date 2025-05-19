@@ -52,7 +52,7 @@
 
         <div style="width: 100%; overflow-x: auto;">
             <div class="d-flex justify-content-between mb-3 align-items-center flex-wrap gap-2">
-                <button wire:click="showCreateForm" class="btn btn-success">Crear nuevo producto</button>
+               <button wire:click="showCreateForm" class="btn btn-success">Crear nuevo producto</button>
 
                 <!--Todavía NO funciona-->
                 <div>
@@ -121,7 +121,7 @@
                                 <button wire:click="edit({{ $product->id }})" class="btn btn-warning btn-sm mt-2">
                                     <i class="bi bi-pencil"></i></button>
                                 <button wire:click="delete({{ $product->id }})" class="btn btn-danger btn-sm mt-2"
-                                    onclick="confirm('¿Estás seguro de eliminar este usuario?') || event.stopImmediatePropagation()">
+                                    onclick="confirm('¿Estás seguro de eliminar este producto?') || event.stopImmediatePropagation()">
                                     <i class="bi bi-trash"></i></button>
                             </td>
                         </tr>

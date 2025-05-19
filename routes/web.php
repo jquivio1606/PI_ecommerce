@@ -4,6 +4,9 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Auth;
+use App\Livewire\ShowStoreProd;
+
+
 
 //VISTAS FOOTER
 Route::view('/aviso-legal', 'legalNotice')->name('legalNotice');

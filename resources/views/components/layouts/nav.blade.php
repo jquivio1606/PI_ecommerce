@@ -9,7 +9,6 @@
         </div>
         <!-- Derecha: buscador + carrito -->
         <div class="d-flex align-items-center">
-            <input type="text" class="form-control me-2" placeholder="Buscar..." style="max-width: 200px;" />
             @if (auth()->check())
                 <!-- Aquí va todo el contenido del carrito -->
                     <a href="{{ route('user.cart')}}" class="btn btn-outline-secondary">

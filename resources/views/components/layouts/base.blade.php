@@ -47,7 +47,7 @@
     <!-- Main -->
     <main class="flex-grow-1 py-4">
         <div class="container">
-            <h2 class="text-center">{{ $tituloSeccion ?? 'Bienvenido a nuestra tienda' }}</h2>
+            <h2 class="text-center fw-bold">{{ $tituloSeccion ?? 'Bienvenido a nuestra tienda' }}</h2>
             <br>
             {{ $slot }}
         </div>

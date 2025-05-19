@@ -13,7 +13,15 @@
         <p> {{ $product->description }} </p>
 
         <!-- Precio -->
-        <p class="fw-bold fs-5"> {{ $product->price }} € </p>
+        @if ($product->discount > 0)
+            <p>
+                <span class="text-muted text-decoration-line-through">{{ number_format($product->price, 2) }}€</span>
+                <span
+                    class="fw-bold fs-5 text-danger ms-2">{{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}€</span>
+            </p>
+        @else
+            <p class="fw-bold fs-5">{{ number_format($product->price, 2) }}€</p>
+        @endif
 
         <livewire:add-to-cart :product="$product" />
     </div>

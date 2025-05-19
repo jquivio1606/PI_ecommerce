@@ -1,4 +1,4 @@
-<x-layouts.base metaTitle="Inicio Tienda" tituloSeccion="Bienvenido a la Tienda de Ropa">
-    @livewire('home-page')
+<x-layouts.base metaTitle="Inicio Tienda" tituloSeccion="¡Encuentra tu estilo perfecto hoy!">
+    @livewire('index-page')
 </x-layouts.base>
 

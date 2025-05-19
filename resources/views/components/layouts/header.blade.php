@@ -11,7 +11,7 @@
             <div>
                 @auth
                     <a href="{{ url('/dashboard') }}" class="mx-3 text-decoration-none text-dark">
-                        Perfil
+                        <i class="bi bi-person-circle"></i> Perfil
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="mx-3 text-decoration-none text-dark">
