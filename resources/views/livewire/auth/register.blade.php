@@ -38,40 +38,95 @@ new #[Layout('components.layouts.auth')] class extends Component {
             $this->redirect(route('user.index', absolute: false), navigate: true);
         }
     }
+};
 ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+    <x-auth-header
+        :title="__('Crear una cuenta')"
+        :description="__('Introduce tus datos para crear tu cuenta')"
+        title="Crear una cuenta"
+        aria-label="Formulario para crear una cuenta"
+    />
 
-    <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
+    <!-- Estado de sesión -->
+    <x-auth-session-status
+        class="text-center"
+        :status="session('status')"
+        role="alert"
+        aria-live="polite"
+    />
 
-    <form wire:submit="register" class="flex flex-col gap-6">
-        <!-- Name -->
-        <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name"
-            :placeholder="__('Full name')" />
+    <form wire:submit="register" class="flex flex-col gap-6" aria-label="Formulario de registro">
+        <!-- Nombre -->
+        <flux:input
+            wire:model="name"
+            :label="__('Nombre completo')"
+            type="text"
+            required
+            autofocus
+            autocomplete="name"
+            placeholder="Nombre completo"
+            title="Introduce tu nombre completo"
+            aria-label="Nombre completo"
+        />
 
-        <!-- Email Address -->
-        <flux:input wire:model="email" :label="__('Email address')" type="email" required autocomplete="email"
-            placeholder="email@example.com" />
+        <!-- Correo electrónico -->
+        <flux:input
+            wire:model="email"
+            :label="__('Correo electrónico')"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="correo@ejemplo.com"
+            title="Introduce tu correo electrónico"
+            aria-label="Correo electrónico"
+        />
 
-        <!-- Password -->
-        <flux:input wire:model="password" :label="__('Password')" type="password" required autocomplete="new-password"
-            :placeholder="__('Password')" />
+        <!-- Contraseña -->
+        <flux:input
+            wire:model="password"
+            :label="__('Contraseña')"
+            type="password"
+            required
+            autocomplete="new-password"
+            placeholder="Contraseña"
+            title="Introduce tu contraseña"
+            aria-label="Contraseña"
+        />
 
-        <!-- Confirm Password -->
-        <flux:input wire:model="password_confirmation" :label="__('Confirm password')" type="password" required
-            autocomplete="new-password" :placeholder="__('Confirm password')" />
+        <!-- Confirmar contraseña -->
+        <flux:input
+            wire:model="password_confirmation"
+            :label="__('Confirmar contraseña')"
+            type="password"
+            required
+            autocomplete="new-password"
+            placeholder="Confirmar contraseña"
+            title="Confirma tu contraseña"
+            aria-label="Confirmar contraseña"
+        />
 
         <div class="flex items-center justify-end">
-            <flux:button type="submit" variant="primary" class="w-full">
-                {{ __('Create account') }}
+            <flux:button
+                type="submit"
+                variant="primary"
+                class="w-full"
+            >
+                {{ __('Crear cuenta') }}
             </flux:button>
         </div>
     </form>
 
-    <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-        {{ __('Already have an account?') }}
-        <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+    <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400" aria-label="Enlace para iniciar sesión">
+        {{ __('¿Ya tienes una cuenta?') }}
+        <flux:link
+            :href="route('login')"
+            wire:navigate
+            title="Iniciar sesión"
+            aria-label="Enlace para iniciar sesión"
+        >
+            {{ __('Iniciar sesión') }}
+        </flux:link>
     </div>
 </div>

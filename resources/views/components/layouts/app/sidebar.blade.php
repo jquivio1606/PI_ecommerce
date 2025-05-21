@@ -15,19 +15,22 @@
 
 
     <!-- Menú de usuario móvil -->
-    <flux:header class="lg:hidden border-b border-zinc-200 bg-zinc-50">
-        <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+    <flux:header class="lg:hidden border-b border-zinc-200 bg-zinc-50" aria-label="Menú de usuario móvil">
+        <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" title="Abrir menú lateral"
+            aria-label="Abrir menú lateral" />
 
         <flux:spacer />
 
-        <flux:dropdown position="top" align="end">
-            <flux:profile :initials="auth() -> user() -> initials()" icon-trailing="chevron-down" />
+        <flux:dropdown position="top" align="end" aria-label="Menú desplegable de perfil de usuario">
+            <flux:profile :initials="auth() -> user() -> initials()" icon-trailing="chevron-down"
+                title="Perfil de usuario" aria-label="Perfil de usuario" />
 
             <flux:menu>
                 <flux:menu.radio.group>
                     <div class="p-0 text-sm font-normal">
-                        <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                            <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
+                        <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm"
+                            aria-label="Información del usuario autenticado">
+                            <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg" aria-hidden="true">
                                 <span
                                     class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
                                     {{ auth()->user()->initials() }}
@@ -46,14 +49,16 @@
 
                 <flux:menu.radio.group>
                     <flux:menu.item class="text-dark text-decoration-none" :href="route('settings.profile')"
-                        icon="cog" wire:navigate>{{ __('Configuración') }}</flux:menu.item>
+                        icon="cog" wire:navigate title="Configuración del perfil"
+                        aria-label="Configuración del perfil">{{ __('Configuración') }}</flux:menu.item>
                 </flux:menu.radio.group>
 
                 <flux:menu.separator />
 
                 <form method="POST" action="{{ route('logout') }}" class="w-full">
                     @csrf
-                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
+                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full"
+                        title="Cerrar sesión" aria-label="Cerrar sesión">
                         {{ __('Cerrar sesión') }}
                     </flux:menu.item>
                 </form>
@@ -64,67 +69,91 @@
 
 
     <div class="flex h-auto min-h-screen cont1">
-        <flux:sidebar sticky stashable
-            class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
-            <flux:sidebar.toggle class="lg:hidden bi bi-x fs-3" />
+        <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900"
+            aria-label="Barra lateral de navegación principal">
+            <flux:sidebar.toggle class="lg:hidden bi bi-x fs-3" title="Cerrar menú lateral"
+                aria-label="Cerrar menú lateral" />
 
 
-            <span class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
-                <x-app-logo />
+            <span class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate
+                aria-label="Logo de la aplicación">
+                <x-app-logo alt="Logo de la tienda" title="Logo de la tienda" />
             </span>
 
-            <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Tienda')" class="grid">
-                    <flux:navlist.item class="text-dark text-decoration-none" :href="route('user.index')"
-                        :current="request() -> routeIs('user.index')" wire:navigate>
+            <flux:navlist variant="outline" aria-label="Navegación principal">
+                <flux:navlist.group :heading="__('Tienda')" class="grid fw-bold" aria-label="Sección Tienda">
+                    <flux:navlist.item
+                        class="text-dark text-decoration-none border border-1 border-dark-subtle shadow-sm rounded
+"
+                        :href="route('user.index')" :current="request() -> routeIs('user.index')" wire:navigate
+                        title="Ir a la página principal de la tienda" aria-label="Ir a la Tienda">
                         {{ __('Ir a la Tienda') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
 
-                <br>
+                <br />
 
                 @if (Auth::check() && Auth::user()->role == 1)
-                    <flux:navlist.group :heading="__('Panel de administrador')" class="grid">
-                        <flux:navlist.item icon="home" class="text-dark text-decoration-none"
+                    <flux:navlist.group :heading="__('Panel de administrador')" class="grid fw-bold"
+                        aria-label="Sección Panel de administrador">
+                        <flux:navlist.item icon="home"
+                            class="text-dark text-decoration-none  border border-1 border-dark-subtle shadow-sm rounded
+"
                             :href="route('admin.dashboard')" :current="request() -> routeIs('admin.dashboard')"
-                            wire:navigate>
+                            wire:navigate title="Ir al panel de administrador" aria-label="Panel de administrador">
                             {{ __('Panel de administrador') }}
                         </flux:navlist.item>
                     </flux:navlist.group>
 
-                    <br>
+                    <br />
 
-                    <flux:navlist.group :heading="__('Opciones de administrador')" class="grid">
-                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2"
+                    <flux:navlist.group :heading="__('Opciones de administrador')" class="grid fw-bold"
+                        aria-label="Opciones para administrador">
+                        <flux:navlist.item
+                            class="text-dark text-decoration-none d-flex align-items-center gap-2  border border-1 border-dark-subtle shadow-sm rounded
+"
                             :href="route('admin.product')" :current="request() -> routeIs('admin.product')"
-                            wire:navigate>
-                            <i class="bi bi-box-seam me-2"></i> {{ __('Información Productos') }}
+                            wire:navigate title="Información de productos" aria-label="Información Productos">
+                            <i class="bi bi-box-seam me-2" aria-hidden="true"></i> {{ __('Información Productos') }}
                         </flux:navlist.item>
 
-                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2"
-                            :href="route('admin.order')" :current="request() -> routeIs('admin.order')" wire:navigate>
-                            <i class="bi bi-cart-check me-2"></i> {{ __('Información Pedidos') }}
+                        <flux:navlist.item
+                            class="text-dark text-decoration-none d-flex align-items-center gap-2 border border-1 border-dark-subtle shadow-sm rounded
+"
+                            :href="route('admin.order')" :current="request() -> routeIs('admin.order')" wire:navigate
+                            title="Información de pedidos" aria-label="Información Pedidos">
+                            <i class="bi bi-cart-check me-2" aria-hidden="true"></i> {{ __('Información Pedidos') }}
                         </flux:navlist.item>
 
-                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2"
-                            :href="route('admin.users')" :current="request() -> routeIs('admin.users')" wire:navigate>
-                            <i class="bi bi-box-seam me-2"></i> {{ __('Información Usuarios') }}
+                        <flux:navlist.item
+                            class="text-dark text-decoration-none d-flex align-items-center gap-2 border border-1 border-dark-subtle shadow-sm rounded
+"
+                            :href="route('admin.users')" :current="request() -> routeIs('admin.users')" wire:navigate
+                            title="Información de usuarios" aria-label="Información Usuarios">
+                            <i class="bi bi-box-seam me-2" aria-hidden="true"></i> {{ __('Información Usuarios') }}
                         </flux:navlist.item>
                     </flux:navlist.group>
                 @else
-                    <flux:navlist.group :heading="__('Perfil')" class="grid">
-                        <flux:navlist.item icon="home" class="text-dark text-decoration-none"
-                            :href="route('user.profile')" :current="request() -> routeIs('user.profile')" wire:navigate>
+                    <flux:navlist.group :heading="__('Perfil')" class="grid" aria-label="Sección Perfil de usuario">
+                        <flux:navlist.item icon="home"
+                            class="text-dark text-decoration-none border border-1 border-dark-subtle shadow-sm rounded
+"
+                            :href="route('user.profile')" :current="request() -> routeIs('user.profile')"
+                            wire:navigate title="Ir al perfil de usuario" aria-label="Perfil">
                             {{ __('Perfil') }}
                         </flux:navlist.item>
                     </flux:navlist.group>
 
-                    <br>
+                    <br />
 
-                    <flux:navlist.group :heading="__('Información del usuario')" class="grid">
-                        <flux:navlist.item class="text-dark text-decoration-none d-flex align-items-center gap-2"
-                            :href="route('user.orders')" :current="request() -> routeIs('user.orders')" wire:navigate>
-                            <i class="bi bi-cart-check me-2"></i> {{ __('Mis Pedidos') }}
+                    <flux:navlist.group :heading="__('Información del usuario')" class="grid fw-bold"
+                        aria-label="Información del usuario">
+                        <flux:navlist.item
+                            class="text-dark text-decoration-none d-flex align-items-center gap-2 border border-1 border-dark-subtle shadow-sm rounded
+"
+                            :href="route('user.orders')" :current="request() -> routeIs('user.orders')" wire:navigate
+                            title="Ver mis pedidos" aria-label="Mis Pedidos">
+                            <i class="bi bi-cart-check me-2" aria-hidden="true"></i> {{ __('Mis Pedidos') }}
                         </flux:navlist.item>
                     </flux:navlist.group>
                 @endif
@@ -133,15 +162,18 @@
             <flux:spacer />
 
             <!-- Menú de usuario de escritorio -->
-            <flux:dropdown position="bottom" align="start">
+            <flux:dropdown position="bottom" align="start" aria-label="Menú desplegable de usuario de escritorio">
                 <flux:profile :name="auth() -> user() -> name" :initials="auth() -> user() -> initials()"
-                    icon-trailing="chevrons-up-down" />
+                    icon-trailing="chevrons-up-down" title="Perfil de usuario"
+                    class="border border-1 border-dark-subtle shadow-sm rounded" aria-label="Perfil de usuario" />
 
                 <flux:menu class="w-[220px]">
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
+                    <flux:menu.radio.group class="w-[280px]">
+                        <div class="p-0 text-sm font-normal m-0 w-[280px]"
+                            aria-label="Información del usuario autenticado">
                             <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
+                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg"
+                                    aria-hidden="true">
                                     <span
                                         class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
                                         {{ auth()->user()->initials() }}
@@ -160,7 +192,9 @@
 
                     <flux:menu.radio.group>
                         <flux:menu.item class="text-dark text-decoration-none" :href="route('settings.profile')"
-                            icon="cog" wire:navigate>{{ __('Configuración') }}</flux:menu.item>
+                            icon="cog" style="outline: none;" onfocus="this.style.outline='1px solid #000'"
+                            onblur="this.style.outline='none'" wire:navigate title="Configuración del perfil"
+                            aria-label="Configuración del perfil">{{ __('Configuración') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -168,7 +202,9 @@
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
-                            class="w-full">
+                            style="outline: none;" onfocus="this.style.outline='1px solid #000'"
+                            onblur="this.style.outline='none'" class="w-full rounded text-dark text-decoration-none" title="Cerrar sesión"
+                            aria-label="Cerrar sesión">
                             {{ __('Cerrar sesión') }}
                         </flux:menu.item>
                     </form>
@@ -179,7 +215,7 @@
         <!-- Contenido principal y footer -->
         <div class="flex-1 flex flex-col">
             <!-- Contenido dinámico -->
-            <main class="flex-1">
+            <main class="flex-1" tabindex="-1">
                 {{ $slot }}
             </main>
 

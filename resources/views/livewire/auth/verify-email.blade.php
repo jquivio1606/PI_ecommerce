@@ -35,23 +35,24 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="mt-4 flex flex-col gap-6">
-    <flux:text class="text-center">
-        {{ __('Please verify your email address by clicking on the link we just emailed to you.') }}
+    <flux:text class="text-center" role="alert" aria-live="polite">
+        {{ __('Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que te acabamos de enviar.') }}
     </flux:text>
 
     @if (session('status') == 'verification-link-sent')
-        <flux:text class="text-center font-medium !dark:text-green-400 !text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+        <flux:text class="text-center font-medium !dark:text-green-400 !text-green-600" role="alert" aria-live="polite">
+            {{ __('Se ha enviado un nuevo enlace de verificación a la dirección de correo electrónico que proporcionaste durante el registro.') }}
         </flux:text>
     @endif
 
     <div class="flex flex-col items-center justify-between space-y-3">
-        <flux:button wire:click="sendVerification" variant="primary" class="w-full">
-            {{ __('Resend verification email') }}
+        <flux:button wire:click="sendVerification" variant="primary" class="w-full"
+            title="Reenviar correo de verificación" aria-label="Botón para reenviar correo de verificación">
+            {{ __('Reenviar correo de verificación') }}
         </flux:button>
 
-        <flux:link class="text-sm cursor-pointer" wire:click="logout">
-            {{ __('Log out') }}
+        <flux:link class="text-sm cursor-pointer" wire:click="logout" title="Cerrar sesión" aria-label="Cerrar sesión">
+            {{ __('Cerrar sesión') }}
         </flux:link>
     </div>
 </div>

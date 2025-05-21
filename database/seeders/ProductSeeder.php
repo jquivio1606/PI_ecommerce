@@ -11,22 +11,25 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        // Tallas de ropa
+        // Crear tallas de ropa
         $clothingSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
         foreach ($clothingSizes as $size) {
             Size::create(['name' => $size]);
         }
 
-        // Tallas de zapatos del 36 al 45
+        // Crear tallas de zapatos del 36 al 45
         for ($i = 36; $i <= 45; $i++) {
             Size::create(['name' => (string) $i]);
         }
 
-        // Obtener todas las tallas
+        // Obtener todas las tallas ya creadas (ropa + zapatos)
         $sizes = Size::all();
+
+        // Separar tallas numéricas (zapatos) y no numéricas (ropa)
         $shoeSizes = $sizes->filter(fn($s) => is_numeric($s->name));
         $clothingSizes = $sizes->filter(fn($s) => !is_numeric($s->name));
 
+        // Definición del array de productos con sus datos
         $products = [
             ['name' => 'Camiseta Relax', 'description' => 'Camiseta cómoda de algodón 100% para cualquier ocasión casual.', 'category' => 'Camisetas', 'gender' => 'Unisex', 'style' => 'Casual', 'color' => 'Rojo', 'price' => 19.99],
             ['name' => 'Pantalón Deportivo', 'description' => 'Pantalón deportivo de felpa con corte slim para entrenar.', 'category' => 'Pantalones', 'gender' => 'Hombre', 'style' => 'Deportivo', 'color' => 'Azul', 'price' => 39.99],
@@ -50,16 +53,20 @@ class ProductSeeder extends Seeder
             ['name' => 'Botas Altas', 'description' => 'Botas altas de cuero con detalle de hebillas, para el invierno.', 'category' => 'Zapatos', 'gender' => 'Mujer', 'style' => 'Elegante', 'color' => 'Negro', 'price' => 120.00]
         ];
 
+        // Array de descuentos para algunos productos (en porcentaje)
         $discounts = [5, 10, 15, 20, 30, 50, 75, 90];
         $index = 0;
 
         foreach ($products as $productData) {
             $discount = null;
+
+            // Asignar descuento si hay disponible en la lista
             if ($index < count($discounts)) {
                 $discount = $discounts[$index];
                 $index++;
             }
 
+            // Crear el producto en la base de datos
             $product = Product::create([
                 'name' => $productData['name'],
                 'description' => $productData['description'],
@@ -71,15 +78,20 @@ class ProductSeeder extends Seeder
                 'discount' => $discount,
             ]);
 
+            // Seleccionar el pool de tallas según categoría del producto
             $sizePool = $productData['category'] === 'Zapatos' ? $shoeSizes : $clothingSizes;
+
+            // Asignar entre 1 y todas las tallas disponibles al producto, al azar
             $assignedSizes = $sizePool->random(rand(1, $sizePool->count()));
 
+            // Relacionar las tallas con el producto y asignar un stock aleatorio entre 5 y 50
             foreach ($assignedSizes as $size) {
                 $product->sizes()->attach($size->id, [
                     'stock' => rand(5, 50),
                 ]);
             }
 
+            // Crear de 1 a 3 imágenes para el producto con URLs aleatorias de picsum.photos
             $numberOfImages = rand(1, 3);
             for ($j = 0; $j < $numberOfImages; $j++) {
                 $imageUrl = 'https://picsum.photos/seed/' . rand(1, 1000) . '/200/200';

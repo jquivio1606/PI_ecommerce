@@ -13,11 +13,11 @@ class ShowStoreProd extends Component
     public $color;
     public $priceMin;
     public $priceMax;
-    public $sizes = []; // Array para las tallas seleccionadas
-    public $availableSizes; // Lista de todas las tallas disponibles
+    public $sizes = [];           // Array con nombres de tallas seleccionadas
+    public $availableSizes;       // Colección de todas las tallas disponibles
     public $style;
 
-    // Listas dinámicas
+    // Listas para mostrar opciones de filtros dinámicos
     public $gendersList = [];
     public $categoriesList = [];
     public $colorsList = [];
@@ -25,56 +25,55 @@ class ShowStoreProd extends Component
 
     public $orderBy;
 
-    public $onlyOffers = false;
+    public $onlyOffers = false;   // Filtro para mostrar solo productos en oferta
 
-    public $prodFiltrado;
-    public $filters = false;
+    public $prodFiltrado;         // Colección de productos filtrados
+    public $filters = false;      // Flag para indicar si hay filtros activos
 
-    public function render()
-    {
-        $products = $this->prodFiltrado ?? Product::all(); // Mostrar productos filtrados si existen
-        return view('livewire.show-store-prod', compact('products'));
-    }
-
+    /**
+     * Inicializa las listas de filtros dinámicos y tallas disponibles
+     */
     public function mount()
     {
-        // Inicializamos las listas de filtros dinámicos
+        // Obtenemos valores distintos de cada atributo para los filtros
         $this->gendersList = Product::distinct()->pluck('gender')->toArray();
         $this->categoriesList = Product::distinct()->pluck('category')->toArray();
         $this->colorsList = Product::distinct()->pluck('color')->toArray();
         $this->stylesList = Product::distinct()->pluck('style')->toArray();
 
-        // Inicializamos las tallas disponibles (de la tabla Size)
+        // Todas las tallas disponibles (tabla Size)
         $this->availableSizes = Size::all();
     }
 
+    /**
+     * Aplica los filtros a la consulta de productos
+     */
     public function filter()
     {
-        // Inicializamos la consulta
         $query = Product::query();
 
         $this->filters = false;
         $this->prodFiltrado = null;
 
-        // Género
+        // Aplicamos filtro por género
         if (!empty($this->gender)) {
             $query->where('gender', $this->gender);
             $this->filters = true;
         }
 
-        // Categorías (pueden ser múltiples)
+        // Filtro por categorías (pueden ser múltiples)
         if (!empty($this->categories)) {
             $query->whereIn('category', $this->categories);
             $this->filters = true;
         }
 
-        // Color
+        // Filtro por color
         if (!empty($this->color)) {
             $query->where('color', $this->color);
             $this->filters = true;
         }
 
-        // Estilo
+        // Filtro por estilo
         if (!empty($this->style)) {
             $query->where('style', $this->style);
             $this->filters = true;
@@ -100,38 +99,52 @@ class ShowStoreProd extends Component
             $this->filters = true;
         }
 
-        // Ofertas (productos con discount > 0)
+        // Mostrar solo productos en oferta
         if ($this->onlyOffers) {
             $query->where('discount', '>', 0);
             $this->filters = true;
         }
 
-
-        // Comprobamos si se aplicaron filtros
+        // Si no hay filtros aplicados, mostramos error y limpiamos resultados
         if (!$this->filters) {
             session()->flash('error', 'Introduce algún dato para filtrar');
-            $this->prodFiltrado = [];
+            $this->prodFiltrado = collect(); // Mejor usar colección vacía que array
             return;
         }
 
-        // Ejecutamos la consulta y almacenamos el resultado
+        // Ejecutamos la consulta y guardamos los productos filtrados
         $this->prodFiltrado = $query->get();
 
+        // Si no hay resultados, mostramos mensaje de error
         if ($this->prodFiltrado->isEmpty()) {
             session()->flash('error', 'No se ha encontrado ningún producto con esas características.');
             $this->filters = false;
         }
     }
 
+    /**
+     * Reinicia todos los filtros y la lista filtrada
+     */
     public function resetFilters()
     {
         $this->gender = null;
         $this->categories = [];
-        $this->color = '';
+        $this->color = null;
         $this->priceMin = null;
         $this->priceMax = null;
-        $this->sizes = []; // Reseteamos las tallas
+        $this->sizes = [];
+        $this->style = null;
+        $this->onlyOffers = false;
         $this->filters = false;
         $this->prodFiltrado = null;
+    }
+
+    /**
+     * Renderiza la vista con los productos (filtrados o todos)
+     */
+    public function render()
+    {
+        $products = $this->prodFiltrado ?? Product::all();
+        return view('livewire.show-store-prod', compact('products'));
     }
 }

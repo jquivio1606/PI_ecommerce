@@ -30,6 +30,31 @@
             font-size: small;
         }
 
+
+        textarea,
+        input,
+        select {
+            border: 1px solid #000 !important;
+        }
+
+        .btn:focus,
+        textarea:focus,
+        input:focus,
+        select:focus {
+            outline: none !important;
+            border: 1px solid black !important;
+        }
+
+        .carousel-control-prev:focus-visible,
+        .carousel-control-next:focus-visible {
+            outline: none;
+            border: 1px solid #000;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
+        }
+
+
+
         @media (max-width: 950px) {
             .container {
                 max-width: 100%;

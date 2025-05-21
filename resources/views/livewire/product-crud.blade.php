@@ -50,8 +50,8 @@
             </div>
         @endif
 
-        <div style="width: 100%; overflow-x: auto;">
-            <div class="d-flex justify-content-between mb-3 align-items-center flex-wrap gap-2">
+        <div style="overflow-x: auto;">
+            <div class="w-100 d-flex justify-content-between mb-3 align-items-center flex-wrap gap-2">
                <button wire:click="showCreateForm" class="btn btn-success">Crear nuevo producto</button>
 
                 <!--Todavía NO funciona-->

@@ -31,7 +31,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Maneja la solicitud de autenticación entrante.
      */
     public function login(): void
     {
@@ -61,7 +61,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 
     /**
-     * Ensure the authentication request is not rate limited.
+     * Asegura que la solicitud de autenticación no esté limitada.
      */
     protected function ensureIsNotRateLimited(): void
     {
@@ -82,7 +82,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 
     /**
-     * Get the authentication rate limiting throttle key.
+     * Obtiene la clave para limitar la tasa de autenticación.
      */
     protected function throttleKey(): string
     {
@@ -92,40 +92,91 @@ new #[Layout('components.layouts.auth')] class extends Component {
 ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+    <x-auth-header
+        :title="__('Inicia sesión en tu cuenta')"
+        :description="__('Introduce tu correo y contraseña para acceder')"
+        title="Inicia sesión en tu cuenta"
+        aria-label="Formulario para iniciar sesión en tu cuenta"
+    />
 
-    <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
+    <!-- Estado de sesión -->
+    <x-auth-session-status
+        class="text-center"
+        :status="session('status')"
+        role="alert"
+        aria-live="polite"
+    />
 
-    <form wire:submit="login" class="flex flex-col gap-6">
-        <!-- Email Address -->
-        <flux:input wire:model="email" :label="__('Email address')" type="email" required autofocus autocomplete="email"
-            placeholder="email@example.com" />
+    <form wire:submit="login" class="flex flex-col gap-6" aria-label="Formulario de inicio de sesión">
+        <!-- Correo electrónico -->
+        <flux:input
+            wire:model="email"
+            :label="__('Correo electrónico')"
+            type="email"
+            required
+            autofocus
+            autocomplete="email"
+            placeholder="correo@ejemplo.com"
+            title="Introduce tu correo electrónico"
+            aria-label="Correo electrónico"
+        />
 
-        <!-- Password -->
+        <!-- Contraseña -->
         <div class="relative">
-            <flux:input wire:model="password" :label="__('Password')" type="password" required
-                autocomplete="current-password" :placeholder="__('Password')" />
+            <flux:input
+                wire:model="password"
+                :label="__('Contraseña')"
+                type="password"
+                required
+                autocomplete="current-password"
+                :placeholder="__('Contraseña')"
+                title="Introduce tu contraseña"
+                aria-label="Contraseña"
+            />
 
             @if (Route::has('password.request'))
-                <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
-                    {{ __('Forgot your password?') }}
+                <flux:link
+                    class="absolute end-0 top-0 text-sm"
+                    :href="route('password.request')"
+                    wire:navigate
+                    title="¿Olvidaste tu contraseña?"
+                    aria-label="Enlace para recuperar contraseña"
+                >
+                    {{ __('¿Olvidaste tu contraseña?') }}
                 </flux:link>
             @endif
         </div>
 
-        <!-- Remember Me -->
-        <flux:checkbox wire:model="remember" :label="__('Remember me')" />
+        <!-- Recuérdame -->
+        <flux:checkbox
+            wire:model="remember"
+            :label="__('Recuérdame')"
+            title="Recuérdame"
+            aria-label="Casilla para recordar sesión"
+        />
 
         <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
+            <flux:button
+                variant="primary"
+                type="submit"
+                class="w-full"
+            >
+                {{ __('Iniciar sesión') }}
+            </flux:button>
         </div>
     </form>
 
     @if (Route::has('register'))
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            {{ __('Don\'t have an account?') }}
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400" aria-label="Enlace para registrarse">
+            {{ __('¿No tienes una cuenta?') }}
+            <flux:link
+                :href="route('register')"
+                wire:navigate
+                title="Regístrate"
+                aria-label="Enlace para registrarse"
+            >
+                {{ __('Regístrate') }}
+            </flux:link>
         </div>
     @endif
 </div>

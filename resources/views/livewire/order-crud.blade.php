@@ -1,5 +1,4 @@
 <div>
-
     <h2 class="mb-5 my-4 text-center">Ver Pedidos</h2>
 
     <div class="card mb-4">
@@ -22,19 +21,15 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" wire:model.defer="userName"
-                            placeholder="Ej: Juan Pérez">
+                        <input type="text" class="form-control" wire:model.defer="userName" placeholder="Ej: Juan Pérez">
                     </div>
-
                     <div class="col-md-3">
                         <label class="form-label">Desde</label>
                         <input type="date" class="form-control" wire:model.defer="startDate" id="startDate">
                     </div>
-
                     <div class="col-md-3">
                         <label class="form-label">Hasta</label>
-                        <input type="date" class="form-control" wire:model.defer="endDate" min="{{ $startDate }}"
-                            id="endDate">
+                        <input type="date" class="form-control" wire:model.defer="endDate" id="endDate" min="{{ $startDate }}">
                     </div>
 
                     <div class="col-12 text-end mt-3">
@@ -51,8 +46,7 @@
     </div>
 
     @if ($showMessage)
-        <div
-            class="alert alert-{{ $messageType == 'success' ? 'success' : ($messageType == 'warning' ? 'warning' : 'danger') }} mb-4">
+        <div class="alert alert-{{ $messageType === 'success' ? 'success' : ($messageType === 'warning' ? 'warning' : 'danger') }} mb-4">
             {{ $message }}
         </div>
     @endif
@@ -68,15 +62,11 @@
                     <label for="status-{{ $order->id }}" class="me-2 fw-bold">Estado:</label>
                     <select id="status-{{ $order->id }}" class="form-select form-select-sm d-inline-block w-auto"
                         wire:change="updateStatus({{ $order->id }}, $event.target.value)">
-                        <option value="pendiente" {{ $order->status === 'pendiente' ? 'selected' : '' }}>Pendiente
-                        </option>
+                        <option value="pendiente" {{ $order->status === 'pendiente' ? 'selected' : '' }}>Pendiente</option>
                         <option value="pagado" {{ $order->status === 'pagado' ? 'selected' : '' }}>Pagado</option>
                         <option value="enviado" {{ $order->status === 'enviado' ? 'selected' : '' }}>Enviado</option>
-                        <option value="cancelado" {{ $order->status === 'cancelado' ? 'selected' : '' }}>Cancelado
-                        </option>
-                        <option value="reembolsado" {{ $order->status === 'reembolsado' ? 'selected' : '' }}>
-                            Reembolsado
-                        </option>
+                        <option value="cancelado" {{ $order->status === 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+                        <option value="reembolsado" {{ $order->status === 'reembolsado' ? 'selected' : '' }}>Reembolsado</option>
                     </select>
                 </div>
             </div>
@@ -103,10 +93,10 @@
                         </div>
                     </div>
                 @endforeach
+
                 @if (isset($totalreturn[$order->id]))
                     <div class="mt-2 d-flex justify-content-between">
-                        <span><strong>Total a devolver:
-                            </strong>€{{ number_format($totalreturn[$order->id], 2) }}</span>
+                        <span><strong>Total a devolver:</strong> €{{ number_format($totalreturn[$order->id], 2) }}</span>
                         <button class="btn btn-warning btn-sm" wire:click="returned({{ $order->id }})">
                             <i class="bi bi-coin"></i> Devolver dinero
                         </button>

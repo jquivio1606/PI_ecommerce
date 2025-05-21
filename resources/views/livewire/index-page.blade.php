@@ -1,8 +1,15 @@
 <div>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    @endif
+
 
     <!-- 1. CARRUSEL NOVEDADES -->
-    <div class="d-flex justify-content-center my-4">
-        <div id="carouselNovedades" class="carousel slide w-75 mx-5" data-bs-ride="carousel">
+    <div class="d-flex justify-content-center position-relative my-4">
+        <div id="carouselNovedades" class="carousel slide w-75" data-bs-ride="carousel">
             <div class="carousel-inner">
                 @foreach ($newProducts as $index => $product)
                     <div class="carousel-item @if ($index == 0) active @endif">
@@ -27,46 +34,48 @@
                     </div>
                 @endforeach
             </div>
-
         </div>
 
-        <!-- Flechas -->
-        <button style="max-height: fit-content;"
-            class="carousel-control-prev position-absolute top-50 translate-middle-y" type="button"
-            data-bs-target="#carouselNovedades" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" style="filter: invert(1);"></span>
-            <span class="visually-hidden">Anterior</span>
+        <!-- Flecha izquierda -->
+        <button class="carousel-control-prev position-absolute top-50 p-2"
+            style="max-height: fit-content; width: fit-content; left: 20px; transform: translateY(-50%);" type="button"
+            data-bs-target="#carouselNovedades" data-bs-slide="prev" title="Producto anterior"
+            aria-label="Producto anterior">
+            <span class="carousel-control-prev-icon" style="filter: invert(1);" aria-hidden="true"></span>
         </button>
-        <button style="max-height: fit-content;"
-            class="carousel-control-next position-absolute top-50 translate-middle-y" type="button"
-            data-bs-target="#carouselNovedades" data-bs-slide="next">
-            <span class="carousel-control-next-icon" style="filter: invert(1);"></span>
-            <span class="visually-hidden">Siguiente</span>
+
+        <!-- Flecha derecha -->
+        <button class="carousel-control-next position-absolute top-50 p-2"
+            style="max-height: fit-content; width: fit-content; right: 20px; transform: translateY(-50%);"
+            type="button" data-bs-target="#carouselNovedades" data-bs-slide="next" title="Producto siguiente"
+            aria-label="Producto siguiente">
+            <span class="carousel-control-next-icon" style="filter: invert(1);" aria-hidden="true"></span>
         </button>
     </div>
+
 
     <!-- 2. Tarjetas de relleno -->
     <h2 class="mb-4 text-center fw-bold">Lo que nos hace únicos</h2>
     <div class="row my-5 text-center">
         <div class="col-md-3 mb-4">
             <i class="bi bi-palette-fill" style="font-size: 60px;"></i>
-            <h5 class="fw-bold mt-3">Variedad de Estilos</h5>
+            <h3 class="fw-bold h5 mt-3">Variedad de Estilos</h3>
             <p>Desde casual hasta elegante, para todos los gustos y ocasiones.</p>
         </div>
         <div class="col-md-3 mb-4">
             <i class="bi bi-tags" style="font-size: 60px;"></i>
-            <h5 class="fw-bold mt-3">Precios Accesibles</h5>
-            <p>Moda de calidad que cuida tu bolsillo sin sacrificar estilo.</p>
+            <h3 class="fw-bold h5 mt-3">Precios Accesibles</h5>
+                <p>Moda de calidad que cuida tu bolsillo sin sacrificar estilo.</p>
         </div>
         <div class="col-md-3 mb-4">
             <i class="bi bi-rulers" style="font-size: 60px;"></i>
-            <h5 class="fw-bold mt-3">Tallas para Todos</h5>
-            <p>Variedad en tallas y colores para que encuentres tu prenda ideal.</p>
+            <h3 class="fw-bold h5 mt-3">Tallas para Todos</h5>
+                <p>Variedad en tallas y colores para que encuentres tu prenda ideal.</p>
         </div>
         <div class="col-md-3 mb-4">
             <i class="bi bi-truck" style="font-size: 60px;"></i>
-            <h5 class="fw-bold mt-3">Envíos Rápidos</h5>
-            <p>Compra fácil y recibe tu pedido en tiempo récord.</p>
+            <h3 class="fw-bold h5 mt-3">Envíos Rápidos</h5>
+                <p>Compra fácil y recibe tu pedido en tiempo récord.</p>
         </div>
     </div>
 
@@ -83,7 +92,7 @@
                             class="card-img-top img-fluid" alt="{{ $product->name }}"
                             style="object-fit: cover; height: 180px;">
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ $product->name }}</h5>
+                            <p class="h5 card-title">{{ $product->name }}</p>
                             <p class="card-text text-truncate" style="max-height: 4.5rem;">
                                 {{ $product->description }}</p>
                             <p class="card-text">Tallas disponibles:

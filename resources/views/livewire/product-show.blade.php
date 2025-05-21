@@ -2,7 +2,10 @@
 
     <div class="col-md-6 mb-4">
         <!-- Imagen del producto -->
-        <img src="producto1.jpg" alt="Producto 1" class="img-fluid" />
+        <img src="producto1.jpg"
+            alt="Imagen de {{ $product->name }} - {{ $product->category }}, para {{ $product->gender }}"
+            aria-label="Imagen del producto {{ $product->name }}" title="Imagen del producto {{ $product->name }}"
+            class="img-fluid" />
     </div>
 
     <div class="col-md-6">

@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Facades\Hash; // Asegúrate de incluir esta clase al inicio del archivo
-
+use Illuminate\Support\Facades\Hash; // Para encriptar las contraseñas
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,21 +13,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Crear un usuario normal de prueba
         User::factory()->create([
             'name' => 'TestUser',
             'email' => 'test@example.com',
-            'password' =>  '123456789',
+            'password' => Hash::make('123456789'),  // Aquí hasheamos la contraseña
         ]);
 
+        // Crear un usuario administrador
         User::factory()->create([
             'name' => 'AdminUser',
             'email' => 'admin@example.com',
-            'password' => '123456789',
-            'role' => '1'
+            'password' => Hash::make('123456789'),  // También aquí
+            'role' => '1',
         ]);
 
+        // Llamar al seeder de productos
         $this->call([
             ProductSeeder::class,
         ]);

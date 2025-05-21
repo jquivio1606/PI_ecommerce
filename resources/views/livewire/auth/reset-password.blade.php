@@ -38,9 +38,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
             $this->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) {
@@ -53,10 +50,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             }
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        if ($status != Password::PasswordReset) {
+        if ($status != Password::PASSWORD_RESET) {
             $this->addError('email', __($status));
 
             return;
@@ -69,44 +63,60 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Reset password')" :description="__('Please enter your new password below')" />
+    <x-auth-header
+        :title="__('Restablecer contraseña')"
+        :description="__('Por favor, introduce tu nueva contraseña abajo')"
+        title="Restablecer contraseña"
+        aria-label="Formulario para restablecer contraseña"
+    />
 
-    <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
+    <!-- Estado de sesión -->
+    <x-auth-session-status
+        class="text-center"
+        :status="session('status')"
+        role="alert"
+        aria-live="polite"
+    />
 
-    <form wire:submit="resetPassword" class="flex flex-col gap-6">
-        <!-- Email Address -->
+    <form wire:submit="resetPassword" class="flex flex-col gap-6" aria-label="Formulario para restablecer contraseña">
+        <!-- Correo electrónico -->
         <flux:input
             wire:model="email"
-            :label="__('Email')"
+            :label="__('Correo electrónico')"
             type="email"
             required
             autocomplete="email"
+            title="Introduce tu correo electrónico"
+            aria-label="Correo electrónico"
         />
 
-        <!-- Password -->
+        <!-- Contraseña -->
         <flux:input
             wire:model="password"
-            :label="__('Password')"
+            :label="__('Contraseña')"
             type="password"
             required
             autocomplete="new-password"
-            :placeholder="__('Password')"
+            :placeholder="__('Contraseña')"
+            title="Introduce tu nueva contraseña"
+            aria-label="Contraseña"
         />
 
-        <!-- Confirm Password -->
+        <!-- Confirmar contraseña -->
         <flux:input
             wire:model="password_confirmation"
-            :label="__('Confirm password')"
+            :label="__('Confirmar contraseña')"
             type="password"
             required
             autocomplete="new-password"
-            :placeholder="__('Confirm password')"
+            :placeholder="__('Confirmar contraseña')"
+            title="Confirma tu nueva contraseña"
+            aria-label="Confirmar contraseña"
         />
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
-                {{ __('Reset password') }}
+                {{ __('Restablecer contraseña') }}
             </flux:button>
         </div>
     </form>
