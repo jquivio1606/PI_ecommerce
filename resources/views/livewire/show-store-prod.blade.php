@@ -104,8 +104,7 @@
 
             <!-- Botones -->
             <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary" aria-label="Filtrar"
-                    title="Filtrar">Filtrar</button>
+                <button type="submit" class="btn btn-primary" aria-label="Filtrar" title="Filtrar">Filtrar</button>
                 <button type="reset" class="btn btn-outline-dark"
                     onmouseover="this.classList.replace('btn-outline-dark','btn-outline-secondary')"
                     onmouseout="this.classList.replace('btn-outline-secondary','btn-outline-dark')"
@@ -124,8 +123,8 @@
             @foreach ($prodFiltrado ?? $products as $product)
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card h-100 shadow-sm">
-                        <img src="{{ $product->images->first()->url ?? 'default-image-url.jpg' }}"
-                            class="card-img-top" alt="Imagen de {{ $product->name }}">
+                        <img src="{{ asset('storage/' . $product->images->first()->url) }}"  class="card-img-top"
+                            alt="Imagen de {{ $product->name }}">
                         <div class="card-body d-flex flex-column">
                             <h3 class="h5" class="card-title">{{ $product->name }}</h3 class="h5">
                             <p class="card-text">{{ $product->description }}</p>

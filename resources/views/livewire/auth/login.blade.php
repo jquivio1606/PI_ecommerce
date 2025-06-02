@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
+use App\Mail\twoFACode;
 
 new #[Layout('components.layouts.auth')] class extends Component {
     #[Validate('required|string|email')]
@@ -47,23 +48,30 @@ new #[Layout('components.layouts.auth')] class extends Component {
             ]);
         }
 
+        // Genera código 2FA de 6 dígitos aleatorio
+        $twoFACode = rand(100000, 999999);
+
+        // Guarda el id del usuario y código en sesión para validar en 2FA
+        $user = Auth::user();
+
+        session([
+            '2fa:user:id' => $user->id,
+            '2fa:user:code' => (string) $twoFACode,
+        ]);
+
+        // Enviar correo con el código al administrador
+        Mail::to($this->email)->send(new twoFACode($twoFACode));
+
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        // Redirección según el rol
-        $user = Auth::user();
-
-        if ($user->role == 1) {
-            $this->redirect(route('admin.dashboard', absolute: false), navigate: true);
-        } else {
-            $this->redirect(route('user.index', absolute: false), navigate: true);
-        }
+        redirect()->to(route('2fa'));
     }
 
     /**
      * Asegura que la solicitud de autenticación no esté limitada.
      */
-    protected function ensureIsNotRateLimited(): void
+    protected function ensureIsNotRateLimited()
     {
         if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
@@ -92,89 +100,48 @@ new #[Layout('components.layouts.auth')] class extends Component {
 ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header
-        :title="__('Inicia sesión en tu cuenta')"
-        :description="__('Introduce tu correo y contraseña para acceder')"
-        title="Inicia sesión en tu cuenta"
-        aria-label="Formulario para iniciar sesión en tu cuenta"
-    />
+    <x-auth-header :title="__('Inicia sesión en tu cuenta')" :description="__('Introduce tu correo y contraseña para acceder')" title="Inicia sesión en tu cuenta"
+        aria-label="Formulario para iniciar sesión en tu cuenta" />
 
     <!-- Estado de sesión -->
-    <x-auth-session-status
-        class="text-center"
-        :status="session('status')"
-        role="alert"
-        aria-live="polite"
-    />
+    <x-auth-session-status class="text-center" :status="session('status')" role="alert" aria-live="polite" />
 
     <form wire:submit="login" class="flex flex-col gap-6" aria-label="Formulario de inicio de sesión">
         <!-- Correo electrónico -->
-        <flux:input
-            wire:model="email"
-            :label="__('Correo electrónico')"
-            type="email"
-            required
-            autofocus
-            autocomplete="email"
-            placeholder="correo@ejemplo.com"
-            title="Introduce tu correo electrónico"
-            aria-label="Correo electrónico"
-        />
+        <flux:input wire:model="email" :label="__('Correo electrónico')" type="email" required autofocus
+            autocomplete="email" placeholder="correo@ejemplo.com" title="Introduce tu correo electrónico"
+            aria-label="Correo electrónico" />
 
         <!-- Contraseña -->
         <div class="relative">
-            <flux:input
-                wire:model="password"
-                :label="__('Contraseña')"
-                type="password"
-                required
-                autocomplete="current-password"
-                :placeholder="__('Contraseña')"
-                title="Introduce tu contraseña"
-                aria-label="Contraseña"
-            />
+            <flux:input wire:model="password" :label="__('Contraseña')" type="password" required
+                autocomplete="current-password" :placeholder="__('Contraseña')" title="Introduce tu contraseña"
+                aria-label="Contraseña" />
 
             @if (Route::has('password.request'))
-                <flux:link
-                    class="absolute end-0 top-0 text-sm"
-                    :href="route('password.request')"
-                    wire:navigate
-                    title="¿Olvidaste tu contraseña?"
-                    aria-label="Enlace para recuperar contraseña"
-                >
+                <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate
+                    title="¿Olvidaste tu contraseña?" aria-label="Enlace para recuperar contraseña">
                     {{ __('¿Olvidaste tu contraseña?') }}
                 </flux:link>
             @endif
         </div>
 
         <!-- Recuérdame -->
-        <flux:checkbox
-            wire:model="remember"
-            :label="__('Recuérdame')"
-            title="Recuérdame"
-            aria-label="Casilla para recordar sesión"
-        />
+        <flux:checkbox wire:model="remember" :label="__('Recuérdame')" title="Recuérdame"
+            aria-label="Casilla para recordar sesión" />
 
         <div class="flex items-center justify-end">
-            <flux:button
-                variant="primary"
-                type="submit"
-                class="w-full"
-            >
+            <flux:button variant="primary" type="submit" class="w-full">
                 {{ __('Iniciar sesión') }}
             </flux:button>
         </div>
     </form>
 
     @if (Route::has('register'))
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400" aria-label="Enlace para registrarse">
+        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400"
+            aria-label="Enlace para registrarse">
             {{ __('¿No tienes una cuenta?') }}
-            <flux:link
-                :href="route('register')"
-                wire:navigate
-                title="Regístrate"
-                aria-label="Enlace para registrarse"
-            >
+            <flux:link :href="route('register')" wire:navigate title="Regístrate" aria-label="Enlace para registrarse">
                 {{ __('Regístrate') }}
             </flux:link>
         </div>

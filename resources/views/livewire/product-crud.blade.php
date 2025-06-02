@@ -1,9 +1,5 @@
 <div>
-
-
-
     @if ($view === 'list')
-
         <h2 class="mb-5 my-4 text-center">Ver datos de los Productos</h2>
 
         <div class="card mb-4">
@@ -52,9 +48,9 @@
 
         <div style="overflow-x: auto;">
             <div class="w-100 d-flex justify-content-between mb-3 align-items-center flex-wrap gap-2">
-               <button wire:click="showCreateForm" class="btn btn-success">Crear nuevo producto</button>
+                <button wire:click="showCreateForm" class="btn btn-success">Crear nuevo producto</button>
 
-                <!--Todavía NO funciona-->
+                <!-- NO funciona (No está implementado es de decoración 😉 )-->
                 <div>
                     <select class="form-select form-select-sm">
                         <option value="5">Mostrar 5 primeros productos</option>
@@ -63,7 +59,9 @@
                         <option value="50">Mostrar 50 primeros productos</option>
                     </select>
                 </div>
+
             </div>
+
             <table class="table table-bordered table-striped w-100 align-items-center">
                 <thead class="thead-light">
                     <tr>
@@ -127,7 +125,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">No hay usuarios</td>
+                            <td colspan="9" class="text-center">No hay Productos</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -137,7 +135,63 @@
         <h2 class="mb-5 my-4 text-center"> {{ $product_id ? 'Actualizar' : 'Crear' }} Productos</h2>
         <div class="card p-3">
 
-            <form wire:submit.prevent="{{ $product_id ? 'update' : 'store' }}" class="row g-3">
+            <form wire:submit.prevent="{{ $product_id ? 'update' : 'store' }}" class="row g-3"
+                enctype="multipart/form-data">
+                <div class="col-md-12">
+                    <label for="images" class="form-label">Imágenes</label>
+                    @if ($imagesDB->count() > 0)
+                        <div class="col-md-6 d-flex flex-wrap gap-3">
+                            @foreach ($imagesDB as $index => $image)
+                                <div style="position: relative; width: 150px; height: 150px;">
+                                    <!-- Imagen -->
+                                    <img src="{{ asset('storage/' . $image->url) }}" alt="Imagen"
+                                        class="rounded w-100 h-100" style="object-fit: cover;">
+
+                                    <!-- Botón de ampliar -->
+                                    <button type="button" class="btn btn-sm btn-dark position-absolute top-0 end-0 m-1"
+                                        style="background-color: rgba(0, 0, 0, 0.5); border: none;"
+                                        data-bs-toggle="modal" data-bs-target="#imageModal{{ $index }}"
+                                        title="Ver en grande">
+                                        <i class="bi bi-fullscreen text-light"></i>
+                                    </button>
+
+                                    <!-- Botón de eliminar -->
+                                    <button type="button"
+                                        class="btn btn-sm btn-danger position-absolute bottom-0 end-0 m-1"
+                                        style="background-color: rgba(0, 0, 0, 0.5); border: none;"
+                                        wire:click="deleteImage({{ $image->id }})" title="Eliminar imagen">
+                                        <i class="bi bi-trash text-light"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Modal de imagen grande -->
+                                <div class="modal fade" id="imageModal{{ $index }}" tabindex="-1"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body p-0">
+                                                <img src="{{ asset('storage/' . $image->url) }}" alt="Imagen ampliada"
+                                                    class="img-fluid w-100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <div class="col-md-12 d-flex align-items-center mt-3 gap-2">
+                        <input type="file" wire:model="images" id="images" class="form-control form-control-sm"
+                            multiple>
+                        <button type="button" wire:click="uploadImages" class="btn btn-primary btn-sm">Aceptar</button>
+                    </div>
+
+
+                    @error('images.*')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
                 <div class="col-md-6">
                     <label for="name" class="form-label">Nombre</label>
                     <input type="text" id="name" wire:model="name" class="form-control form-control-sm"
@@ -146,8 +200,8 @@
 
                 <div class="col-md-6">
                     <label for="description" class="form-label">Descripción</label>
-                    <input type="text" id="description" wire:model="description" class="form-control form-control-sm"
-                        placeholder="Descripción">
+                    <input type="text" id="description" wire:model="description"
+                        class="form-control form-control-sm" placeholder="Descripción">
                 </div>
 
                 <div class="col-md-6">
@@ -168,6 +222,21 @@
                         placeholder="Estilo">
                 </div>
 
+                <div class="col-md-6 row mt-3">
+                    <div class="col-md-6">
+                        <label for="price" class="form-label">Precio</label>
+                        <input type="number" id="price" wire:model="price" class="form-control form-control-sm"
+                            placeholder="Precio" step="0.01">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="discount" class="form-label">Descuento</label>
+                        <input type="number" id="discount" wire:model="discount"
+                            class="form-control form-control-sm" placeholder="Descuento" step="5"
+                            max="90" min="0">
+                    </div>
+                </div>
+
+
                 <div class="col-md-6">
                     <label for="category" class="form-label">Categoría</label>
                     <select id="category" wire:model="category" wire:change="filterSizes"
@@ -180,13 +249,18 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="price" class="form-label">Precio</label>
-                    <input type="number" id="price" wire:model="price" class="form-control form-control-sm"
-                        placeholder="Precio" step="0.01">
+                    <label for="newCategory" class="form-label">Otra categoría:</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" id="newCategory" wire:model="newCategory" class="form-control"
+                            placeholder="Nueva Categoría">
+                        <button class="btn btn-outline-dark" type="button" wire:click="addNewCategory">
+                            Añadir
+                        </button>
+                    </div>
                 </div>
 
                 <div class="col-12">
-                    <h5 class="mb-3">Asignar Stock por Talla</h5>
+                    <h5 class="my-4">Asignar Stock por Talla</h5>
                     <div class="d-flex flex-wrap gap-3">
                         @foreach ($availableSizes as $size)
                             <div class="d-flex align-items-center mb-2">
@@ -197,10 +271,19 @@
                                     placeholder="Stock" min="0" style="width: 80px;">
                             </div>
                         @endforeach
+                        <div class="d-flex align-items-center mb-2">
+                            <label for="newSize" class="form-label mb-0 me-2" style="min-width: fit-content;">Otra
+                                talla:</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" id="newSize" wire:model="newSize"
+                                    class="form-control form-control-sm" placeholder="Ej: XS, M, XL...">
+                                <button class="btn btn-outline-dark" type="button" wire:click="addNewSize">
+                                    Añadir
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-
 
                 <div class="col-12 d-flex gap-2">
                     <button type="submit" class="btn btn-primary btn-sm">

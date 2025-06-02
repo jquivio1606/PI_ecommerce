@@ -19,7 +19,8 @@ class ProductShow extends Component
     public function mount($id)
     {
         // Busca el producto por ID. Si no lo encuentra, lanza un error 404.
-        $this->product = Product::findOrFail($id);
+        $this->product = Product::with('images')->findOrFail($id);
+
     }
 
     /**

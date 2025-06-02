@@ -113,7 +113,8 @@ class ShowStoreProd extends Component
         }
 
         // Ejecutamos la consulta y guardamos los productos filtrados
-        $this->prodFiltrado = $query->get();
+        $this->prodFiltrado = $query->with('images')->get();
+
 
         // Si no hay resultados, mostramos mensaje de error
         if ($this->prodFiltrado->isEmpty()) {
@@ -144,7 +145,8 @@ class ShowStoreProd extends Component
      */
     public function render()
     {
-        $products = $this->prodFiltrado ?? Product::all();
+        $products = $this->prodFiltrado ?? Product::with('images')->get();
         return view('livewire.show-store-prod', compact('products'));
     }
+
 }

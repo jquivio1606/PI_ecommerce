@@ -2,7 +2,11 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Storage;
+use Livewire\WithFileUploads;
 use App\Models\Product;
+use App\Models\Size;
+use App\Models\Image;
 use Livewire\Component;
 
 class ProductCrud extends Component
@@ -10,6 +14,13 @@ class ProductCrud extends Component
     // Variables públicas para manejar los datos del producto y del formulario
     public $products, $product_id, $name, $description, $color, $gender, $style, $category, $price, $discount;
 
+    use WithFileUploads;
+
+    public $images = [];
+    public $imagesDB = "";
+
+    public $newCategory = '';
+    public $newSize = '';
     public $categories = []; // Lista de categorías únicas disponibles
     public $sizes = []; // Array asociativo de talla_id => stock
     public $availableSizes; // Tallas disponibles según la categoría (ropa o zapatos)
@@ -32,10 +43,14 @@ class ProductCrud extends Component
     public function mount()
     {
         $this->products = Product::all(); // Carga todos los productos
-        $this->allSizes = \App\Models\Size::all(); // Carga todas las tallas posibles
+        $this->allSizes = Size::all(); // Carga todas las tallas posibles
         $this->filterSizes(); // Filtra tallas según categoría actual (inicial)
         // Obtiene todas las categorías únicas existentes en productos para el filtro o selector
         $this->categories = Product::distinct()->pluck('category')->toArray();
+
+        $this->categories = Product::distinct()->pluck('category')->toArray();
+        $this->availableSizes = Size::all();
+
     }
 
     /**
@@ -83,13 +98,13 @@ class ProductCrud extends Component
 
     /**
      * Filtra tallas disponibles según la categoría actual:
-     * - Si es "zapatos", solo devuelve tallas numéricas.
+     * - Si es "calzado", solo devuelve tallas numéricas.
      * - Para ropa, devuelve tallas XS a XL.
      */
     public function filterSizes()
     {
-        if (strtolower($this->category) === 'zapatos') {
-            // Para zapatos, filtra solo tallas numéricas
+        if (strtolower($this->category) === 'calzado') {
+            // Para calzado, filtra solo tallas numéricas
             $this->availableSizes = $this->allSizes->filter(function ($size) {
                 return is_numeric($size->name);
             });
@@ -115,7 +130,7 @@ class ProductCrud extends Component
      */
     public function resetInputs()
     {
-        $this->product_id = $this->name = $this->description = $this->color = $this->gender = $this->style = $this->category = '';
+        $this->product_id = $this->name = $this->description = $this->color = $this->gender = $this->style = $this->category = $this->newSize = $this->newCategory = '';
         $this->price = null;
         $this->sizes = [];
     }
@@ -131,6 +146,104 @@ class ProductCrud extends Component
     }
 
     /**
+     * Añade una nueva categoría si no existe, formatea el nombre y asigna la categoría actual.
+     * Muestra mensaje y limpia el campo.
+     */
+    public function addNewCategory()
+    {
+        // Limpia espacios y convierte el texto a formato "Título" (primera letra mayúscula)
+        $name = trim(mb_convert_case($this->newCategory, MB_CASE_TITLE));
+
+        // Si el nombre no está vacío y no existe ya en el array de categorías
+        if ($name && !in_array($name, $this->categories)) {
+            // Añade la nueva categoría al listado de categorías
+            $this->categories[] = $name;
+
+            // Asigna la nueva categoría seleccionada para usar en el formulario
+            $this->category = $name;
+
+            // Muestra un mensaje flash para informar al usuario que la categoría fue añadida
+            session()->flash('message', 'Nueva categoría añadida.');
+        }
+
+        // Limpia el campo input de nueva categoría para que quede vacío
+        $this->newCategory = '';
+    }
+
+    /**
+     * Añade una nueva talla, la busca o crea en BD, la añade si no existe,
+     * inicializa stock a 0, y limpia el campo.
+     */
+    public function addNewSize()
+    {
+        // Limpia espacios y convierte el texto a MAYÚSCULAS para uniformidad
+        $name = trim(mb_strtoupper($this->newSize));
+
+        // Si el nombre no está vacío
+        if ($name) {
+            // Busca o crea una nueva talla en la tabla sizes con ese nombre
+            $size = Size::firstOrCreate(['name' => $name]);
+
+            // Comprueba que la talla no esté ya en el array de tallas disponibles
+            if (!collect($this->availableSizes)->contains('id', $size->id)) {
+                // Si no está, la añade a la lista de tallas disponibles
+                $this->availableSizes[] = $size;
+            }
+
+            // Inicializa el stock de esta talla nueva a 0 en el array sizes (para el formulario)
+            $this->sizes[$size->id] = 0;
+        }
+
+        // Limpia el campo input de nueva talla para que quede vacío
+        $this->newSize = '';
+    }
+
+    public function removePreviewImage($key)
+    {
+        $images = $this->images;
+        unset($images[$key]);
+        $this->images = array_values($images); // Reindexar
+    }
+
+    public function deleteImage($id)
+    {
+        $image = Image::find($id);
+
+        if ($image) {
+            Storage::disk('public')->delete($image->url);
+            $image->delete();
+
+            $this->imagesDB = Image::where('product_id', $this->product_id)->get();
+        }
+    }
+
+
+    public function uploadImages()
+    {
+        $this->validate([
+            'images.*' => 'image|max:2048', // valida que sean imágenes max 2MB cada una
+        ]);
+
+        foreach ($this->images as $image) {
+            $path = $image->store('products', 'public');
+
+            // Guardar en la BD
+            Image::create([
+                'product_id' => $this->product_id,
+                'url' => $path,
+            ]);
+        }
+
+        // Limpiar input y recargar imágenes de BD
+        $this->images = [];
+        $this->imagesDB = Image::where('product_id', $this->product_id)->get();
+
+        // Para limpiar el input file en frontend:
+        $this->dispatch('clearFileInput');
+
+    }
+
+    /**
      * Carga datos de un producto existente para editar.
      * Además, carga los stocks asociados a las tallas.
      *
@@ -138,16 +251,20 @@ class ProductCrud extends Component
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
-        $this->product_id = $product->id;
-        $this->fill($product->toArray()); // Llena propiedades con datos del producto
 
-        // Obtiene el stock para cada talla desde la tabla pivote 'product_size'
+        $product = Product::with('images')->findOrFail($id);
+        $this->product_id = $product->id;
+        $this->fill($product->toArray());
+
+        $this->imagesDB = $product->images;
+
         $this->sizes = $product->sizes->pluck('pivot.stock', 'id')->toArray();
 
-        $this->filterSizes(); // Actualiza tallas disponibles según categoría
-        $this->view = 'form'; // Cambia a vista formulario
+        $this->availableSizes = Size::all();
+        $this->categories = Product::distinct()->pluck('category')->toArray();
+        $this->view = 'form';
     }
+
 
     /**
      * Valida y guarda un nuevo producto en la base de datos.
@@ -160,13 +277,23 @@ class ProductCrud extends Component
             'price' => 'required|numeric',
         ]);
 
-        // Crea el producto con los datos validados
+        // Si se ingresó una nueva categoría, guárdala
+        if (!empty($this->newCategory)) {
+            $this->category = trim($this->newCategory);
+        }
+
+        // Si se ingresó una nueva talla, guárdala
+        if (!empty($this->newSize)) {
+            $size = Size::firstOrCreate(['name' => trim($this->newSize)]);
+            $this->sizes[$size->id] = 0; // inicializa stock en 0 para esa talla
+        }
+
         $product = Product::create($this->validateData());
 
-        // Recorre las tallas y adjunta solo las que tienen stock mayor que 0
+        // Guardar tallas con su stock
         foreach ($this->sizes as $sizeId => $stock) {
             if ($stock > 0) {
-                $product->sizes()->attach($sizeId, ['stock' => $stock]); // attach() para nuevas relaciones
+                $product->sizes()->attach($sizeId, ['stock' => $stock]);
             }
         }
 
@@ -174,6 +301,7 @@ class ProductCrud extends Component
         session()->flash('message', 'Producto creado correctamente.');
         $this->view = 'list';
     }
+
 
     /**
      * Valida y actualiza un producto existente.
@@ -186,10 +314,18 @@ class ProductCrud extends Component
             'price' => 'required|numeric',
         ]);
 
+        if (!empty($this->newCategory)) {
+            $this->category = trim($this->newCategory);
+        }
+
+        if (!empty($this->newSize)) {
+            $size = Size::firstOrCreate(['name' => trim($this->newSize)]);
+            $this->sizes[$size->id] = 0;
+        }
+
         $product = Product::findOrFail($this->product_id);
         $product->update($this->validateData());
 
-        // Construye un array para sincronizar tallas con stocks
         $syncData = [];
         foreach ($this->sizes as $sizeId => $stock) {
             if ($stock > 0) {
@@ -197,13 +333,13 @@ class ProductCrud extends Component
             }
         }
 
-        // sync() reemplaza relaciones existentes por las nuevas (borra las anteriores que no estén aquí)
         $product->sizes()->sync($syncData);
 
         $this->resetInputs();
         session()->flash('message', 'Producto actualizado.');
         $this->view = 'list';
     }
+
 
     /**
      * Cancela la edición o creación y vuelve a la lista de productos.
@@ -233,14 +369,15 @@ class ProductCrud extends Component
     private function validateData()
     {
         return [
-            'name' => $this->name,
+            'name' => trim(mb_convert_case($this->name, MB_CASE_TITLE)),
             'description' => $this->description,
-            'color' => $this->color,
-            'gender' => $this->gender,
-            'style' => $this->style,
+            'color' => trim(mb_convert_case($this->color, MB_CASE_TITLE)),
+            'gender' => trim(mb_convert_case($this->gender, MB_CASE_TITLE)),
+            'style' => trim(mb_convert_case($this->style, MB_CASE_TITLE)),
             'category' => $this->category,
             'price' => $this->price,
             'discount' => $this->discount,
         ];
+
     }
 }

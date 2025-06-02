@@ -17,8 +17,6 @@ return new class extends Migration {
             $table->string('color')->nullable();
             $table->string('gender')->nullable(); // hombre, mujer, unisex
             $table->string('style')->nullable(); // clásico, moderno, etc.
-            $table->string('size')->nullable(); // S, M, L...
-            $table->integer('stock')->default(0);
             $table->string('category')->nullable();
             $table->decimal('price', 8, 2);
             $table->integer('discount')->nullable()->default(0);

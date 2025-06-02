@@ -1,6 +1,7 @@
 <x-layouts.base metaTitle="Accesibilidad" tituloSeccion="Accesibilidad">
 
-    <div class="card shadow-sm h-100 mb-3" aria-label="Introducción sobre accesibilidad del sitio" title="Introducción a la accesibilidad">
+    <div class="card shadow-sm h-100 mb-3" aria-label="Introducción sobre accesibilidad del sitio"
+        title="Introducción a la accesibilidad">
         <div class="card-body d-flex flex-column justify-content-between p-5">
             <p class="mb-4" style="font-size: 1.1rem">
                 En cumplimiento con lo dispuesto para los sitios web de las Administraciones Públicas por la Ley de
@@ -10,9 +11,11 @@
 
             <h3 class="h4 mt-4 fw-semibold border-bottom pb-2">Declaración de Accesibilidad</h3>
             <p>
-                La Comunidad de Madrid se ha comprometido a hacer accesible su sitio web de conformidad con el Real
-                Decreto 1112/2018, de 7 de septiembre, sobre accesibilidad de los sitios web y aplicaciones para
-                dispositivos móviles del sector público (en adelante, Real Decreto 1112/2018, de 7 de septiembre).
+                Este sitio web se compromete a ser accesible de conformidad con el <a
+                    href="https://www.boe.es/buscar/act.php?id=BOE-A-2018-12699">Real Decreto 1112/2018, de 7 de
+                    septiembre</a>, sobre accesibilidad de los sitios web y aplicaciones para dispositivos móviles del
+                sector
+                público.
             </p>
             <p>
                 El objetivo es garantizar un acceso universal a la información mediante herramientas web no excluyentes,
@@ -25,16 +28,20 @@
                     ambientales, dispositivo).</li>
             </ul>
 
+            <p>La presente declaración de accesibilidad se aplica al sitio web <a
+                    href="{{ route('user.index') }}">www.nombredeldominio.es</a>.</p>
+
             <h4 class="h5 mt-4 fw-semibold border-bottom pb-2">Situación de cumplimiento</h4>
             <p>
-                Tras la autoevaluación llevada a cabo por la Agencia para la Administración Digital de la Comunidad de
-                Madrid, se determina que este sitio web es no conforme con el Real Decreto 1112/2018, de 7 de
-                septiembre, debido a la falta de conformidad de los aspectos que se indican a continuación.
+                Tras la autoevaluación llevada a cabo, se determina que este sitio web es no conforme con el Real
+                Decreto 1112/2018, de 7 de septiembre, debido a la falta de conformidad de los aspectos que se indican a
+                continuación.
             </p>
         </div>
     </div>
 
-    <div class="card shadow-sm h-100 mb-3" aria-label="Detalles sobre contenidos no accesibles" title="Contenidos no accesibles">
+    <div class="card shadow-sm h-100 mb-3" aria-label="Detalles sobre contenidos no accesibles"
+        title="Contenidos no accesibles">
         <div class="card-body d-flex flex-column justify-content-between p-5">
             <h3 class="h4 mt-4 fw-semibold border-bottom pb-2">Contenido no accesible</h3>
             <p>
@@ -61,36 +68,47 @@
         </div>
     </div>
 
-    <div class="card shadow-sm h-100 mb-3" aria-label="Información para comunicaciones y contacto" title="Comunicaciones y contacto sobre accesibilidad">
+    <div class="card shadow-sm h-100 mb-3" aria-label="Información para comunicaciones y contacto"
+        title="Comunicaciones y contacto sobre accesibilidad">
         <div class="card-body d-flex flex-column justify-content-between p-5">
             <h3 class="h4 mt-4 fw-semibold border-bottom pb-2">Comunicaciones y datos de contacto</h3>
             <p>
                 Puede realizar comunicaciones sobre requisitos de accesibilidad a través de los siguientes medios:
             </p>
             <ul>
-                <li><strong>Formulario Web</strong></li>
+                <li><a href="{{ route('contact') }}"><strong>Formulario Web</strong></a></li>
                 <li><strong>Teléfono:</strong> 012</li>
             </ul>
             <p>
                 La comunicación de incidencias técnicas o errores debe realizarse a través de los canales de Atención al
-                Ciudadano.
+                Usuario.
             </p>
 
             <h4 class="h5 mt-4 fw-semibold border-bottom pb-2">Procedimiento de aplicación</h4>
             <p>
-                Puede solicitar información accesible o presentar una queja si considera que no se han cumplido los
-                requisitos de accesibilidad. Las solicitudes y quejas serán tratadas por la Subdirección General
-                competente en Administración Electrónica.
+                Puede solicitar, en formato accesible, información que no cumpla con los requisitos de accesibilidad,
+                bien por estar excluida, bien por estar exenta por carga desproporcionada o formular una queja por
+                incumplimiento de los requisitos de accesibilidad.
             </p>
+            <a href="{{ route('contact') }}">
+                Solicitud de información accesible o quejas sobre accesibilidad de los sitios web y aplicaciones para
+                dispositivos móviles.
+            </a>
             <h4 class="h5 mt-4 fw-semibold border-bottom pb-2">Reclamaciones</h4>
             <p>
-                Si no está de acuerdo con una decisión sobre la accesibilidad, puede presentar una reclamación ante la
-                Subdirección General competente.
+                Si una vez realizada una solicitud de información accesible o queja, ésta hubiera sido desestimada,
+                no estuviera de acuerdo con la decisión adoptada, o la respuesta no cumpliera los requisitos exigidos,
+                la persona interesada podrá iniciar una reclamación. También se podrá presentar en el caso de que
+                haya trascurrido el plazo de veinte días hábiles sin haber obtenido respuesta.
             </p>
+            <a href="{{ route('contact') }}">
+                Reclamación sobre requisitos de accesibilidad de los sitios web y aplicaciones para dispositivos móviles
+            </a>
         </div>
     </div>
 
-    <div class="card shadow-sm h-100 mb-3" aria-label="Historial de revisiones de accesibilidad" title="Historial de revisiones">
+    <div class="card shadow-sm h-100 mb-3" aria-label="Historial de revisiones de accesibilidad"
+        title="Historial de revisiones">
         <div class="card-body d-flex flex-column justify-content-between p-5">
 
             <h3 class="h4 mt-4 fw-semibold border-bottom pb-2">Historial de revisiones</h3>

@@ -29,6 +29,10 @@ Route::middleware('auth')->group(function () {
 
     Volt::route('confirm-password', 'auth.confirm-password')
         ->name('password.confirm');
+
+    // Verificación en 2 pasos
+    Volt::route('2fa', 'auth.second-verification')->name('2fa');
+
 });
 
 Route::post('logout', App\Livewire\Actions\Logout::class)

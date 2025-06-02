@@ -14,9 +14,11 @@ class Image extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    // app/Models/Image.php
+
     public function product()
     {
-        // Se indica que esta imagen pertenece a un producto a través de 'product_id'
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(Product::class);
     }
+
 }

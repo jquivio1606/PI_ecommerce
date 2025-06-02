@@ -4,7 +4,8 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\ShowStoreProd;
+use App\Livewire\TwoFactorAuth;
+
 
 // ----------------------------
 // RUTAS DE VISTAS PÚBLICAS (FOOTER)
@@ -18,7 +19,6 @@ Route::view('/contacto', 'contact')->name('contact');
 
 // Página de accesibilidad
 Route::view('/accesibilidad', 'accessibility')->name('accessibility');
-
 
 // ----------------------------
 // RUTAS PARA USUARIOS NORMALES (PÚBLICAS Y PROTEGIDAS)

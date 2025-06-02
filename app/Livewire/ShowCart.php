@@ -30,8 +30,8 @@ class ShowCart extends Component
             $cart = $user->cart()->create();
         }
 
-        // Carga los items del carrito
-        $this->cartItems = $cart->items;
+        // Carga los items del carrito con la relación de producto e imágenes
+        $this->cartItems = $cart->items()->with('product.images')->get();
 
         // Si el carrito está vacío, mostramos mensaje de advertencia
         if ($this->cartItems->isEmpty()) {

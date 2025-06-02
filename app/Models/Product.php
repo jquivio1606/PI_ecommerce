@@ -13,7 +13,7 @@ class Product extends Model
     protected $table = 'products';
 
     // Campos que se pueden asignar masivamente al crear o actualizar un producto
-    protected $fillable = ['name', 'description', 'color', 'gender', 'style', 'size', 'category', 'stock', 'price'];
+    protected $fillable = ['name', 'description', 'color', 'gender', 'style', 'size', 'category', 'stock', 'price', 'discount'];
 
     /**
      * Relación uno a muchos con las imágenes del producto.
@@ -21,11 +21,13 @@ class Product extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    // app/Models/Product.php
+
     public function images()
     {
-        // Relación con la clase Image usando 'product_id' como clave foránea
-        return $this->hasMany(Image::class, 'product_id');
+        return $this->hasMany(Image::class);
     }
+
 
     /**
      * Relación muchos a muchos con tallas (sizes).

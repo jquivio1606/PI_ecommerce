@@ -24,13 +24,24 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'AdminUser',
             'email' => 'admin@example.com',
-            'password' => Hash::make('123456789'),  // También aquí
+            'password' => Hash::make('123456789'),
             'role' => '1',
         ]);
 
-        // Llamar al seeder de productos
+        // Crear un usuario administrador
+        User::factory()->create([
+            'name' => 'Judit',
+            'email' => 'juditquirosviolero@gmail.com',
+            'password' => Hash::make('123456789'),
+            'role' => '1',
+        ]);
+
+        // Llamar al seeder de productos e imágenes
         $this->call([
             ProductSeeder::class,
+            ImageSeeder::class,
         ]);
+
+
     }
 }

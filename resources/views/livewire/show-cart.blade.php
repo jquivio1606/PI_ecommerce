@@ -23,11 +23,14 @@
                         </div>
 
                         <!-- Imagen del producto -->
-                        <div class="col-3">
-                            <img src="{{ $item->product->image }}" class="img-fluid"
-                                alt="Imagen del producto {{ $item->product->name }}"
-                                title="Imagen del producto {{ $item->product->name }}">
+                        <div class=" col-3 d-flex justify-content-center">
+                            <img src="{{ asset('storage/' . $item->product->images->first()->url) }}"
+                                alt="Imagen de {{ $item->product->name }} - {{ $item->product->category }}, para {{ $item->product->gender }}"
+                                aria-label="Imagen del producto {{ $item->product->name }}"
+                                title="Imagen del producto {{ $item->product->name }}"
+                                class="img-fluid rounded shadow-sm" style="max-height: 250px;">
                         </div>
+
 
                         <!-- Descripción del producto -->
                         <div class="col" role="region"
@@ -125,8 +128,7 @@
         @endforeach
 
         <div class="bg-light py-4 mt-4 border border-subtle rounded" role="contentinfo"
-            aria-label="Resumen de pedido y acciones"
-            style="position: sticky; bottom: 0; z-index: 1020;">
+            aria-label="Resumen de pedido y acciones" style="position: sticky; bottom: 0; z-index: 1020;">
             <div class="d-flex gap-5 justify-content-end align-items-center" role="region" aria-live="polite"
                 aria-atomic="true">
                 <p class="text-right me-5 m-0" aria-label="Cantidad de productos seleccionados">
