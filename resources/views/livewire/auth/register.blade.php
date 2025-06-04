@@ -42,6 +42,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 ?>
 
 <div class="flex flex-col gap-6">
+    @section('title', 'Registrarse')
     <x-auth-header
         :title="__('Crear una cuenta')"
         :description="__('Introduce tus datos para crear tu cuenta')"

@@ -23,7 +23,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header
+    @section('title', 'Olvidaste tu Contraseña?')    
+<x-auth-header
         :title="__('¿Olvidaste tu contraseña?')"
         :description="__('Introduce tu correo para recibir un enlace de restablecimiento de contraseña')"
         title="¿Olvidaste tu contraseña?"

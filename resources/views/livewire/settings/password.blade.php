@@ -40,6 +40,7 @@ new class extends Component {
 
 <section class="w-full">
     @include('partials.settings-heading')
+    @section('title', 'Cambiar Contraseña')
 
     <x-settings.layout :heading="__('Actualizar contraseña')" :subheading="__('Asegúrate de que tu cuenta use una contraseña larga y aleatoria para mantenerla segura')">
         <form wire:submit="updatePassword" class="mt-6 space-y-6">

@@ -13,7 +13,6 @@
 
 <body class="min-h-screen bg-white dark:bg-zinc-800">
 
-
     <!-- Menú de usuario móvil -->
     <flux:header class="lg:hidden border-b border-zinc-200 bg-zinc-50" aria-label="Menú de usuario móvil">
         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" title="Abrir menú lateral"

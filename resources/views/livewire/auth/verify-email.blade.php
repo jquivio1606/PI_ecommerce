@@ -35,6 +35,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="mt-4 flex flex-col gap-6">
+    @section('title', 'Verificar email')
+
     <flux:text class="text-center" role="alert" aria-live="polite">
         {{ __('Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que te acabamos de enviar.') }}
     </flux:text>

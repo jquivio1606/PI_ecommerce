@@ -21,6 +21,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     public bool $remember = false;
 
+
+
     /**
      * Guarda la URL anterior (para redirigir después del login)
      */
@@ -99,7 +101,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
 };
 ?>
 
+
 <div class="flex flex-col gap-6">
+    @section('title', 'Iniciar sesión')
     <x-auth-header :title="__('Inicia sesión en tu cuenta')" :description="__('Introduce tu correo y contraseña para acceder')" title="Inicia sesión en tu cuenta"
         aria-label="Formulario para iniciar sesión en tu cuenta" />
 

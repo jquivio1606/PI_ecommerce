@@ -62,7 +62,7 @@ Route::middleware(['auth', 'role:0'])->group(function () {
     })->name('user.profile');
 
     // Página de pedidos del usuario
-    Route::view('/pedidos', 'user.orders')->name('user.orders');
+    Route::view('/usuario/pedidos', 'user.orders')->name('user.orders');
 });
 
 
@@ -72,7 +72,7 @@ Route::middleware(['auth', 'role:0'])->group(function () {
 
 Route::middleware(['auth', 'role:1'])->group(function () {
     // Dashboard administrador
-    Route::get('/admin', function () {
+    Route::get('/admin/panel', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 

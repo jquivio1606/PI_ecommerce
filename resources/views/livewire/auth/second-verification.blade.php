@@ -37,6 +37,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 };
 ?>
 <div class="flex flex-col gap-6">
+    @section('title', 'Segunda Verificación')
     <x-auth-header title="Verificación en 2 pasos"
         description="Le hemos enviado un email. Por favor introduzca el código que contiene el mensaje para continuar"
         aria-label="Formulario para iniciar sesión en tu cuenta" />
