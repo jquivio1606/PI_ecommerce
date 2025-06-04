@@ -89,4 +89,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    /**
+     * Devuelve el carrito del usuario, o lo crea si no existe.
+     *
+     * @return Cart
+     */
+    public function getOrCreateCart()
+    {
+        return $this->cart()->firstOrCreate([]);
+    }
 }

@@ -1,8 +1,4 @@
 <div>
-
-
-
-
     @if ($view == 'list')
         <h2 class="mb-5 my-4 text-center">Ver datos de los Productos</h2>
         <!-- Filtros -->

@@ -77,53 +77,12 @@ class OrderConfirmation extends Component
      */
     public function confirmOrder()
     {
-        DB::beginTransaction(); // Inicia transacción para asegurar que todo se guarda correctamente
+        $order = Order::createFromCartItems(auth()->user(), $this->cartItems);
 
-        $total = $this->totalPrice;
-
-        // Crear pedido en la base de datos
-        $order = Order::create([
-            'user_id' => auth()->id(),
-            'total' => $total,
-            'status' => 'pendiente',
-        ]);
-
-        // Crear items del pedido y actualizar stock
-        foreach ($this->cartItems as $item) {
-            // Calcula el precio con descuento si aplica
-            $price = $item->product->price;
-            if ($item->product->discount && $item->product->discount > 0) {
-                $discount = $item->product->discount;
-                $price = $price - ($price * $discount / 100);
-            }
-
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'size_id' => $item->size_id,
-                'quantity' => $item->quantity,
-                'price' => $price,  // Guardamos el precio con descuento aquí
-            ]);
-
-            // Reducir el stock desde la tabla intermedia product_size
-            DB::table('product_size')
-                ->where('product_id', $item->product_id)
-                ->where('size_id', $item->size_id)
-                ->decrement('stock', $item->quantity);
-
-            // Eliminar el ítem del carrito
-            $item->delete();
-        }
-
-        DB::commit(); // Confirma todos los cambios si no hubo errores
-
-        // Enviar correo de confirmación al administrador
         Mail::to('juditquirosviolero@gmail.com')->send(new EmailPedidos($order));
 
-        // Mensaje de éxito para el usuario
         session()->flash('success', '¡Pedido confirmado con éxito!');
 
-        // Redirigir al inicio del usuario
         return redirect()->route('user.index');
     }
 
