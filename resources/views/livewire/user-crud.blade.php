@@ -9,13 +9,13 @@
             <div class="card-body">
                 <form wire:submit.prevent="filter" class="row g-3 align-items-end">
                     <div class="col-md">
-                        <label class="form-label">Nombre</label>
-                        <input type="text" wire:model.defer="filterName" class="form-control" placeholder="Ej: María">
+                        <label for="filterName" class="form-label">Nombre</label>
+                        <input type="text" id="filterName" name="filterName" wire:model.defer="filterName" class="form-control" placeholder="Ej: María">
                     </div>
 
                     <div class="col-md">
-                        <label class="form-label">Rol</label>
-                        <select wire:model.defer="filterRole" class="form-select">
+                        <label for="filterRole" class="form-label">Rol</label>
+                        <select id="filterRole" name="filterRole" wire:model.defer="filterRole" class="form-select">
                             <option value="">-- Todos --</option>
                             @foreach ($roles as $key => $label)
                                 <option value="{{ $key }}">{{ $label }}</option>
@@ -91,24 +91,24 @@
         <div class="card p-3">
             <form wire:submit.prevent="update">
                 <div class="mb-3">
-                    <label>Nombre:</label>
-                    <input type="text" wire:model.defer="name" class="form-control">
+                    <label for="name" class="form-label">Nombre:</label>
+                    <input type="text" id="name" name="name" wire:model.defer="name" class="form-control">
                     @error('name')
                         <span class="text-danger">{{ $errors->first('name') }}</span>
                     @enderror
                 </div>
 
                 <div class="mb-3">
-                    <label>Email:</label>
-                    <input type="email" wire:model.defer="email" class="form-control">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" name="email" wire:model.defer="email" class="form-control">
                     @error('email')
                         <span class="text-danger">{{ $errors->first('email') }}</span>
                     @enderror
                 </div>
 
                 <div class="mb-3">
-                    <label>Rol:</label>
-                    <select wire:model.defer="role" class="form-select">
+                    <label for="role" class="form-label">Rol:</label>
+                    <select id="role" name="role" wire:model.defer="role" class="form-select">
                         <option value="">Selecciona un rol</option>
                         <option value="0">Usuario</option>
                         <option value="1">Administrador</option>

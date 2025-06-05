@@ -14,6 +14,9 @@ use App\Livewire\TwoFactorAuth;
 // Página de aviso legal
 Route::view('/aviso-legal', 'legalNotice')->name('legalNotice');
 
+// Página del mapa web
+Route::view('/mapaWeb', 'siteMap')->name('siteMap');
+
 // Página de contacto
 Route::view('/contacto', 'contact')->name('contact');
 
@@ -113,12 +116,12 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth'])->group(function () {
     // Redirigir shortcut a perfil
-    Route::redirect('settings', 'settings/profile');
+    Route::redirect('configuracion', 'settings/profile');
 
     // Rutas de configuración de usuario con Volt
-    Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    Volt::route('settings/password', 'settings.password')->name('settings.password');
-    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+    Volt::route('configuracion/perfil', 'settings.profile')->name('settings.profile');
+    Volt::route('configuracion/contraseña', 'settings.password')->name('settings.password');
+    Volt::route('configuracion/apariencia', 'settings.appearance')->name('settings.appearance');
 });
 
 
@@ -126,7 +129,7 @@ Route::middleware(['auth'])->group(function () {
 // OTRAS RUTAS
 // ----------------------------
 
-// Vista home (posible página general o dashboard alternativo)
+// Vista home (lo utiliza laravel en sus vista y si lo quito se peta)
 Route::get('/home', function () {
     return view('home');
 })->name('home');

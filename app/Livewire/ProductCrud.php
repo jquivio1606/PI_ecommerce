@@ -17,7 +17,7 @@ class ProductCrud extends Component
     use WithFileUploads;
 
     public $images = [];
-    public $imagesDB = "";
+    public $imagesDB = [];
 
     public $newCategory = '';
     public $newSize = '';
@@ -44,11 +44,12 @@ class ProductCrud extends Component
     {
         $this->products = Product::all(); // Carga todos los productos
         $this->allSizes = Size::all(); // Carga todas las tallas posibles
+
         $this->filterSizes(); // Filtra tallas según categoría actual (inicial)
+
         // Obtiene todas las categorías únicas existentes en productos para el filtro o selector
         $this->categories = Product::distinct()->pluck('category')->toArray();
 
-        $this->categories = Product::distinct()->pluck('category')->toArray();
         $this->availableSizes = Size::all();
 
     }
@@ -117,15 +118,6 @@ class ProductCrud extends Component
     }
 
     /**
-     * Se ejecuta automáticamente cuando se actualiza la categoría.
-     * Refresca las tallas disponibles para la nueva categoría.
-     */
-    public function updatedCategory()
-    {
-        $this->filterSizes();
-    }
-
-    /**
      * Limpia todos los campos del formulario para una nueva entrada.
      */
     public function resetInputs()
@@ -133,6 +125,8 @@ class ProductCrud extends Component
         $this->product_id = $this->name = $this->description = $this->color = $this->gender = $this->style = $this->category = $this->newSize = $this->newCategory = '';
         $this->price = null;
         $this->sizes = [];
+        $this->images = [];      // Limpia imágenes cargadas nuevas
+        $this->imagesDB = [];    // Limpia imágenes guardadas en BD
     }
 
     /**
@@ -200,10 +194,13 @@ class ProductCrud extends Component
 
     public function removePreviewImage($key)
     {
-        $images = $this->images;
-        unset($images[$key]);
-        $this->images = array_values($images); // Reindexar
+        if (isset($this->images[$key]) && is_object($this->images[$key])) {
+            unset($this->images[$key]);
+            // Reindexar el array para evitar huecos y mantenerlo limpio
+            $this->images = array_values($this->images);
+        }
     }
+
 
     public function deleteImage($id)
     {
@@ -218,27 +215,36 @@ class ProductCrud extends Component
     }
 
 
-    public function uploadImages()
+    /**
+     * Guarda las imágenes cargadas, asociándolas al producto dado.
+     *
+     * @param int $productId ID del producto
+     */
+    private function saveImages($productId)
     {
+
+        $validImages = collect($this->images)
+            ->filter(fn($img) => $img instanceof \Illuminate\Http\UploadedFile)
+            ->values();
+
+        if ($validImages->isEmpty()) {
+            return;
+        }
+
+        // Valida solo si hay imágenes
         $this->validate([
-            'images.*' => 'image|max:2048', // valida que sean imágenes max 2MB cada una
+            'images.*' => 'image|max:2048',
         ]);
 
         foreach ($this->images as $image) {
             $path = $image->store('products', 'public');
-
-            // Guardar en la BD
             Image::create([
-                'product_id' => $this->product_id,
                 'url' => $path,
+                'product_id' => $productId,
             ]);
         }
 
-        // Limpiar input y recargar imágenes de BD
         $this->images = [];
-        $this->imagesDB = Image::where('product_id', $this->product_id)->get();
-
-        // Para limpiar el input file en frontend:
         $this->dispatch('clearFileInput');
 
     }
@@ -275,6 +281,22 @@ class ProductCrud extends Component
         $this->validate([
             'name' => 'required',
             'price' => 'required|numeric',
+            'discount' => 'nullable|numeric|min:0', // nullable para permitir vacío
+            'sizes' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $hasStock = false;
+                    foreach ($value as $stock) {
+                        if ($stock > 0) {
+                            $hasStock = true;
+                            break;
+                        }
+                    }
+                    if (!$hasStock) {
+                        $fail('Debes asignar stock a al menos una talla.');
+                    }
+                }
+            ],
         ]);
 
         // Si se ingresó una nueva categoría, guárdala
@@ -297,6 +319,14 @@ class ProductCrud extends Component
             }
         }
 
+        // Guardar imágenes
+        $this->saveImages($product->id);
+
+        // Recargar imágenes de BD (opcional si vas a mostrar inmediatamente)
+        $this->imagesDB = Image::where('product_id', $product->id)->get();
+
+
+
         $this->resetInputs();
         session()->flash('message', 'Producto creado correctamente.');
         $this->view = 'list';
@@ -312,6 +342,22 @@ class ProductCrud extends Component
         $this->validate([
             'name' => 'required',
             'price' => 'required|numeric',
+            'discount' => 'nullable|numeric|min:0', // nullable para permitir vacío
+            'sizes' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $hasStock = false;
+                    foreach ($value as $stock) {
+                        if ($stock > 0) {
+                            $hasStock = true;
+                            break;
+                        }
+                    }
+                    if (!$hasStock) {
+                        $fail('Malamente');
+                    }
+                }
+            ],
         ]);
 
         if (!empty($this->newCategory)) {
@@ -334,6 +380,11 @@ class ProductCrud extends Component
         }
 
         $product->sizes()->sync($syncData);
+
+        // Guardar imágenes asociadas SOLO si hay imágenes nuevas
+        if (!empty($this->images)) {
+            $this->saveImages($product->id);
+        }
 
         $this->resetInputs();
         session()->flash('message', 'Producto actualizado.');
