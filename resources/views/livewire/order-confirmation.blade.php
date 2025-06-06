@@ -6,9 +6,11 @@
                     <div class="row">
                         <!-- Imagen del producto -->
                         <div class="col-md-4 col-12 my-3">
-                            <img src="{{ $item->product->image }}" class="img-fluid"
-                                alt="Imagen del producto {{ $item->product->name }}"
-                                title="Imagen de {{ $item->product->name }}">
+                            <img src="{{ asset('storage/' . $item->product->images->first()->url) }}"
+                                alt="Imagen de {{ $item->product->name }} - {{ $item->product->category }}, para {{ $item->product->gender }}"
+                                aria-label="Imagen del producto {{ $item->product->name }}"
+                                title="Imagen del producto {{ $item->product->name }}"
+                                class="img-fluid rounded shadow-sm d-block mx-auto" style="max-height: 250px;">
                         </div>
 
                         <!-- Datos del producto -->
@@ -22,11 +24,14 @@
                                 <div class="col-6 col-md-4" role="list"
                                     aria-label="Características básicas del producto">
                                     <p role="listitem"><strong>Género:</strong>
-                                        <span>{{ $item->product->gender }}</span></p>
-                                    <p role="listitem"><strong>Estilo:</strong> <span>{{ $item->product->style }}</span>
+                                        <span>{{ $item->product->gender }}</span>
+                                    </p>
+                                    <p role="listitem"><strong>Estilo:</strong>
+                                        <span>{{ $item->product->style }}</span>
                                     </p>
                                     <p role="listitem"><strong>Categoría:</strong>
-                                        <span>{{ $item->product->category }}</span></p>
+                                        <span>{{ $item->product->category }}</span>
+                                    </p>
                                     <p role="listitem"><strong>Color:</strong> <span>{{ $item->product->color }}</span>
                                     </p>
                                 </div>

@@ -30,4 +30,33 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class); // Relación con el usuario dueño del carrito
     }
+
+
+    /**
+     * Añade un producto al carrito, sumando cantidad si ya existe.
+     *
+     * @param int $productId
+     * @param int $sizeId
+     * @param int $quantity
+     * @return void
+     */
+    public function addProduct(int $productId, int $sizeId, int $quantity = 1)
+    {
+        $cartItem = $this->items()
+            ->where('product_id', $productId)
+            ->where('size_id', $sizeId)
+            ->first();
+
+        if ($cartItem) {
+            $cartItem->quantity += $quantity;
+            $cartItem->save();
+        } else {
+            $this->items()->create([
+                'product_id' => $productId,
+                'size_id' => $sizeId,
+                'quantity' => $quantity,
+            ]);
+        }
+    }
+
 }

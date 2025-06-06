@@ -11,8 +11,8 @@ class ImageSeeder extends Seeder
     {
         $images = [
             // 1. Abrigo largo mujer camel
-            ['product_id' => 1, 'url' => 'fotos_productos/abrigo_largo_muj_camel_1.jpg'],
-            ['product_id' => 1, 'url' => 'fotos_productos/abrigo_largo_muj_camel.jpg'],
+            ['product_id' => 1, 'url' => 'fotos_productos/abrigo_largo_muj_camel_1.png'],
+            ['product_id' => 1, 'url' => 'fotos_productos/abrigo_largo_muj_camel.png'],
 
             // 2. Blazer hombre negro
             ['product_id' => 2, 'url' => 'fotos_productos/blazer_hom_negro_1.png'],

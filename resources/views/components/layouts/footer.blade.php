@@ -3,6 +3,8 @@
     <div class="container text-center">
         <!-- Enlaces -->
         <div class="mb-2">
+            <a href="{{ route('siteMap') }}" class="mx-3 p-1 text-decoration-none text-dark" title="Ir a la página del mapa web"
+                aria-label="Mapa Web">Mapa Web</a> |
             <a href="{{ route('contact') }}" class="mx-3 p-1 text-decoration-none text-dark" title="Ir a la página de contacto"
                 aria-label="Contacto">Contacto</a> |
             <a href="{{ route('legalNotice') }}" class="mx-3 p-1 text-decoration-none text-dark"

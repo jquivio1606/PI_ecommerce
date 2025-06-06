@@ -17,7 +17,7 @@
                             <!-- Imagen con cartel de Novedades -->
                             <div
                                 class="col-12 col-md-6 position-relative d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('storage/' . $product->images->first()->url) }}"
+                                <img src="{{ asset('storage/' . optional($product->images->first())->url) }}"
                                     class="img-fluid w-100 object-fit-cover rounded-start" style="max-height: 600px"
                                     alt="{{ $product->name }}">
                             </div>
@@ -88,7 +88,7 @@
             <div class="col">
                 <a href="{{ route('productos.show', $product->id) }}" class="text-decoration-none text-dark">
                     <div class="card h-100 shadow-sm">
-                        <img src="{{ asset('storage/' . $product->images->first()->url) }}"
+                        <img src="{{ asset('storage/' . optional($product->images->first())->url) }}"
                             class="card-img-top img-fluid" alt="{{ $product->name }}"
                             style="object-fit: cover; height: 180px;">
                         <div class="card-body d-flex flex-column">
