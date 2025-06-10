@@ -20,7 +20,7 @@ class EmailPedidos extends Mailable
      */
     public function __construct($pedido)
     {
-        $this->pedido = $pedido; // Asigna el pedido a la propiedad pública para que esté disponible en la vista del email
+        $this->pedido = $pedido;            // Asigna el pedido a la propiedad pública para que esté disponible en la vista del email
     }
 
     /**

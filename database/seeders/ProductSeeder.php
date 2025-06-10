@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Product;
 use App\Models\Size;
-use App\Models\Image;
 
 class ProductSeeder extends Seeder
 {

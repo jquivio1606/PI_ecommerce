@@ -13,7 +13,6 @@
             <div class="col-12 mb-3" role="listitem">
                 <div class="card p-3" aria-label="Producto {{ $item->product->name }}">
                     <div class="row align-items-center">
-                        <!-- Check box -->
                         <div class="col-auto">
                             <!-- Checkbox -->
                             <input type="checkbox" wire:click="itemSelection({{ $item->id }})"
@@ -143,7 +142,5 @@
                 </button>
             </div>
         </div>
-
-
     </div>
 </div>

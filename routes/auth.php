@@ -16,7 +16,6 @@ Route::middleware('guest')->group(function () {
 
     Volt::route('reset-password/{token}', 'auth.reset-password')
         ->name('password.reset');
-
 });
 
 Route::middleware('auth')->group(function () {
@@ -32,7 +31,6 @@ Route::middleware('auth')->group(function () {
 
     // Verificación en 2 pasos
     Volt::route('2fa', 'auth.second-verification')->name('2fa');
-
 });
 
 Route::post('logout', App\Livewire\Actions\Logout::class)

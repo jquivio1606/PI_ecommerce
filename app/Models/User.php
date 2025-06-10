@@ -25,7 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', // Define el rol del usuario (e.g. admin o usuario normal)
+        'role',             // Define el rol del usuario (e.g. admin o usuario normal)
     ];
 
     /**
@@ -35,7 +35,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token', // Token para mantener la sesión iniciada
+        'remember_token',   // Token para mantener la sesión iniciada
     ];
 
     /**
@@ -51,6 +51,24 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relación 1:1 con el carrito de compras.
+     * Un usuario tiene un carrito.
+     */
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    /**
+     * Relación 1:N con pedidos.
+     * Un usuario puede tener muchos pedidos.
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
     /**
@@ -72,23 +90,6 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    /**
-     * Relación 1:1 con el carrito de compras.
-     * Un usuario tiene un carrito.
-     */
-    public function cart()
-    {
-        return $this->hasOne(Cart::class);
-    }
-
-    /**
-     * Relación 1:N con pedidos.
-     * Un usuario puede tener muchos pedidos.
-     */
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
 
     /**
      * Devuelve el carrito del usuario, o lo crea si no existe.

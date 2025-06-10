@@ -6,7 +6,7 @@
     <div class="mt-5" aria-label="Sección de comentarios sobre el producto" role="region" tabindex="-1">
         <h3 id="comentarios-title">Comentarios sobre el producto</h3>
 
-        <form action="enviar_comentario.php" method="POST" aria-labelledby="comentarios-title" novalidate>
+        <form action="{{ route('productos.show', $product->id) }}"  aria-labelledby="comentarios-title" novalidate>
             <!-- Formulario de comentario -->
             <div class="mb-3">
                 <label for="comentario" class="mt-2 form-label" id="comentario-label"

@@ -18,9 +18,8 @@ class ProductShow extends Component
      */
     public function mount($id)
     {
-        // Busca el producto por ID. Si no lo encuentra, lanza un error 404.
+        // Busca el producto por ID.
         $this->product = Product::with('images')->findOrFail($id);
-
     }
 
     /**

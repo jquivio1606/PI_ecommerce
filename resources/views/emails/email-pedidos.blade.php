@@ -5,7 +5,8 @@
 <p><strong>Fecha:</strong> {{ $pedido->created_at->format('d/m/Y H:i') }}</p>
 
 <p>
-    <a href="{{ url('/admin/pedidos/')}}" style="padding:10px 15px; background:#0d6efd; color:white; text-decoration:none; border-radius:5px;">
+    <a href="{{ url('/admin/pedidos/') }}"
+        style="padding:10px 15px; background:#0d6efd; color:white; text-decoration:none; border-radius:5px;">
         Ver en la web
     </a>
 </p>

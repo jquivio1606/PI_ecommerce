@@ -8,17 +8,17 @@ use App\Models\OrderItem;
 
 class OrderCrud extends Component
 {
-    public $orders;          // Colección de pedidos cargados
-    public $totalreturn = []; // Array para llevar la cuenta de totales devueltos por pedido
+    public $orders;     // Colección de pedidos cargados
+    public $totalreturn = [];   // Array para llevar la cuenta de totales devueltos por pedido
 
-    public $message = null;    // Mensaje que se mostrará al usuario
-    public $messageType = 'success'; // Tipo de mensaje (success, warning, error)
-    public $showMessage = false;      // Controla si se muestra el mensaje o no
+    public $message = null;     // Mensaje que se mostrará al usuario
+    public $messageType = 'success';    // Tipo de mensaje (success, warning, error)
+    public $showMessage = false;    // Controla si se muestra el mensaje o no
 
-    public $statusFilter = '';  // Filtro para el estado del pedido
-    public $userName = '';      // Filtro para buscar pedidos por nombre de usuario
-    public $startDate = '';     // Fecha inicial para filtrar pedidos por rango de fechas
-    public $endDate = '';       // Fecha final para filtrar pedidos por rango de fechas
+    public $statusFilter = '';    // Filtro para el estado del pedido
+    public $userName = '';   // Filtro para buscar pedidos por nombre de usuario
+    public $startDate = '';  // Fecha inicial para filtrar pedidos por rango de fechas
+    public $endDate = '';   // Fecha final para filtrar pedidos por rango de fechas
 
     /**
      * Método que se ejecuta al iniciar el componente.

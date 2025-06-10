@@ -8,30 +8,40 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     public function mount()
     {
-        if (!session()->has('2fa:user:code')) {
-            redirect()->route('login')->send();
+        // Validar sesión 2FA
+        if (!session()->has('2fa:user:code') || !session()->has('2fa:user:id')) {
+            Auth::logout();
+            session()->invalidate();
+            session()->regenerateToken();
+
+            $this->redirect(route('login'));
         }
     }
 
     public function verification()
     {
-        // Validar que el código esté presente y sea numérico (puedes ajustar según necesidad)
-        $this->validate([
-            'codigo' => 'required|digits:6',
-        ]);
+        $this->validate(
+            [
+                'codigo' => 'required|digits:6',
+            ],
+            [
+                'codigo.required' => 'Por favor, introduce el código de verificación.',
+                'codigo.digits' => 'El código debe tener exactamente 6 dígitos.',
+            ],
+        );
 
-        // Obtener el código guardado en sesión
         $codigoGuardado = session('2fa:user:code');
 
-        if ($this->codigo === $codigoGuardado) {
-            // Código correcto: autenticar usuario definitivamente y borrar datos de sesión 2FA
-            session()->forget(['2fa:user:id', '2fa:user:code']);
-
-            // Aquí podrías, por ejemplo, marcar al usuario como 2FA verificado y redirigir
-            return redirect()->route('dashboard'); // Cambia 'dashboard' por la ruta que quieras
-        } else {
-            // Código incorrecto: mostrar error
+        if ($this->codigo !== $codigoGuardado) {
+            // Código introducido no coincide con el guardado:
             $this->addError('codigo', 'El código introducido es incorrecto.');
+        } else {
+            // Código correcto:
+            session()->forget(['2fa:user:id', '2fa:user:code']); // Limpia datos temporales 2FA
+            session(['2fa:verified' => true]); // Marcar 2FA como completado
+
+            // Redirige al destino (dashboard o ruta que quieras)
+            return redirect()->intended(route('dashboard'));
         }
     }
 };
@@ -51,6 +61,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                 placeholder="Introduce el código: XXXXXX" title="Introduce el código de verificación"
                 aria-label="Código de verificación" />
+            <span style="font-size: smaller; font-weight: lighter;"> Campo obligatorio</span>
+
             @error('codigo')
                 <span class="text-red-600 text-sm">{{ $message }}</span>
             @enderror

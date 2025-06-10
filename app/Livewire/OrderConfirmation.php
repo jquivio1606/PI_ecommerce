@@ -2,9 +2,7 @@
 
 namespace App\Livewire;
 
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use App\Models\OrderItem;
 use App\Models\Order;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EmailPedidos;

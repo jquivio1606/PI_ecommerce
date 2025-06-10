@@ -21,8 +21,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     public bool $remember = false;
 
-
-
     /**
      * Guarda la URL anterior (para redirigir después del login)
      */
@@ -53,9 +51,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
         // Genera código 2FA de 6 dígitos aleatorio
         $twoFACode = rand(100000, 999999);
 
-        // Guarda el id del usuario y código en sesión para validar en 2FA
         $user = Auth::user();
 
+        // Guarda el id del usuario y código en sesión para validar en 2FA
         session([
             '2fa:user:id' => $user->id,
             '2fa:user:code' => (string) $twoFACode,
@@ -100,7 +98,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 };
 ?>
-
 
 <div class="flex flex-col gap-6">
     @section('title', 'Iniciar sesión')

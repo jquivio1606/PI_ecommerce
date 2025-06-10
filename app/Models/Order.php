@@ -11,16 +11,16 @@ class Order extends Model
 {
     use HasFactory;
 
-    // Campos que se pueden asignar masivamente para crear o actualizar una orden
+    // Campos que se pueden asignar masivamente para crear o actualizar un pedido
     protected $fillable = [
-        'user_id',  // ID del usuario que realizó el pedido
-        'total',    // Total del pedido
-        'status',   // Estado actual del pedido (ej. pendiente, enviado, cancelado)
+        'user_id',              // ID del usuario que realizó el pedido
+        'total',                // Total del pedido
+        'status',               // Estado actual del pedido (ej. pendiente, enviado, cancelado)
     ];
 
     /**
      * Relación con el usuario que hizo el pedido.
-     * Una orden pertenece a un usuario.
+     * Un pedido pertenece a un usuario.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -31,7 +31,7 @@ class Order extends Model
 
     /**
      * Relación con los ítems del pedido.
-     * Una orden tiene muchos ítems (productos con cantidad, talla, etc).
+     * Un pedido tiene muchos ítems (productos con cantidad, talla, etc).
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -62,7 +62,7 @@ class Order extends Model
                 $total += $price * $item->quantity;
             }
 
-            // Creamos la orden
+            // Creamos el pedido
             $order = self::create([
                 'user_id' => $user->id,
                 'total' => $total,

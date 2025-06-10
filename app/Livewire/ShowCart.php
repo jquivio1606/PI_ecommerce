@@ -6,13 +6,13 @@ use Livewire\Component;
 
 class ShowCart extends Component
 {
-    public $cartItems;           // Items que hay en el carrito del usuario
-    public $totalPrice = 0;      // Precio total de los productos seleccionados
-    public $selectedItems = [];  // IDs de los productos seleccionados para compra
-    public $itemToDelete = null; // ID del producto a eliminar (si se usa)
-    public $message = null;      // Mensaje de notificación para el usuario
+    public $cartItems;               // Items que hay en el carrito del usuario
+    public $totalPrice = 0;          // Precio total de los productos seleccionados
+    public $selectedItems = [];      // IDs de los productos seleccionados para compra
+    public $itemToDelete = null;     // ID del producto a eliminar (si se usa)
+    public $message = null;          // Mensaje de notificación para el usuario
     public $messageType = 'success'; // Tipo de mensaje ('success', 'error', 'warning')
-    public $showMessage = false; // Controla si se muestra el mensaje
+    public $showMessage = false;     // Controla si se muestra el mensaje
 
     /**
      * Se ejecuta al cargar el componente.
@@ -22,11 +22,10 @@ class ShowCart extends Component
     public function mount()
     {
         $user = auth()->user();
-
         $cart = $user->cart;
 
+        // Si el usuario no tiene carrito, se crea uno vacío
         if (!$cart) {
-            // Si el usuario no tiene carrito, se crea uno vacío
             $cart = $user->cart()->create();
         }
 
@@ -38,7 +37,7 @@ class ShowCart extends Component
             $this->setMessage('Todavía no hay productos en el carrito', 'warning');
         }
 
-        // Calcula el total de productos seleccionados (inicialmente ninguno)
+        // Calcula el total de productos seleccionados
         $this->updateTotal();
     }
 

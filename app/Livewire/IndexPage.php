@@ -21,10 +21,10 @@ class IndexPage extends Component
         // Obtener las categorías únicas no nulas, capitalizarlas, ordenarlas alfabéticamente y resetear los índices
         $this->categories = Product::whereNotNull('category')
             ->distinct()
-            ->pluck('category')                             // Trae solo los valores únicos de la columna 'category'
-            ->map(fn($cat) => ucfirst($cat))                // Capitaliza la primera letra
-            ->sort()                                        // Ordena alfabéticamente
-            ->values();                                     // Reinicia los índices para que el array sea limpio
+            ->pluck('category')   // Trae solo los valores únicos de la columna 'category'
+            ->map(fn($cat) => ucfirst($cat))    // Capitaliza la primera letra
+            ->sort()    // Ordena alfabéticamente
+            ->values();     // Reinicia los índices para que el array sea limpio
 
         // Obtener los 10 productos más recientes
         $this->newProducts = Product::latest()->take(10)->get();

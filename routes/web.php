@@ -4,12 +4,25 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\TwoFactorAuth;
-
 
 // ----------------------------
-// RUTAS DE VISTAS PÚBLICAS (FOOTER)
+// RUTAS PÚBLICAS
 // ----------------------------
+
+// Página principal de usuario (home)
+Route::view('/', 'user.index')->name('user.index');
+
+// Página tienda (listado de productos)
+Route::view('/tienda', 'user.tienda')->name('user.tienda');
+
+// Página sobre nosotros
+Route::view('/sobreNosotros', 'user.aboutUs')->name('user.aboutUs');
+
+// Página para mostrar producto específico por id (dinámico)
+Route::get('/productos/{id}', function ($id) {
+    $product = Product::findOrFail($id);
+    return view('user.product', compact('product'));
+})->name('productos.show');
 
 // Página de aviso legal
 Route::view('/aviso-legal', 'legalNotice')->name('legalNotice');
@@ -23,36 +36,6 @@ Route::view('/contacto', 'contact')->name('contact');
 // Página de accesibilidad
 Route::view('/accesibilidad', 'accessibility')->name('accessibility');
 
-// ----------------------------
-// RUTAS PARA USUARIOS NORMALES (PÚBLICAS Y PROTEGIDAS)
-// ----------------------------
-
-// Página principal de usuario (home)
-Route::get('/', function () {
-    return view('user.index');
-})->name('user.index');
-
-// Página tienda (listado de productos)
-Route::view('/tienda', 'user.tienda')->name('user.tienda');
-
-// Página sobre nosotros
-Route::view('/sobreNosotros', 'user.aboutUs')->name('user.aboutUs');
-
-// Página carrito de compra
-Route::view('/carrito', 'user.cart')->name('user.cart');
-
-// Página genérica de producto (sin datos específicos)
-Route::view('/producto', 'user.product')->name('user.product');
-
-// Página de confirmación de pedido
-Route::view('/confirmacionPedido', 'user.orderConfirmation')->name('user.orderConfirmation');
-
-// Página para mostrar producto específico por id (dinámico)
-Route::get('/productos/{id}', function ($id) {
-    $product = Product::findOrFail($id);  // Buscar producto o fallar si no existe
-    return view('user.product', compact('product')); // Pasar producto a la vista
-})->name('productos.show');
-
 
 // ----------------------------
 // RUTAS PROTEGIDAS PARA USUARIO AUTENTICADO CON ROL 0 (USUARIO NORMAL)
@@ -60,9 +43,7 @@ Route::get('/productos/{id}', function ($id) {
 
 Route::middleware(['auth', 'role:0'])->group(function () {
     // Perfil de usuario autenticado
-    Route::get('/usuario/perfil', function () {
-        return view('user.profile');
-    })->name('user.profile');
+    Route::view('/usuario/perfil','user.profile')->name('user.profile');
 
     // Página de pedidos del usuario
     Route::view('/usuario/pedidos', 'user.orders')->name('user.orders');
@@ -74,25 +55,14 @@ Route::middleware(['auth', 'role:0'])->group(function () {
 // ----------------------------
 
 Route::middleware(['auth', 'role:1'])->group(function () {
-    // Dashboard administrador
-    Route::get('/admin/panel', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
 
-    // CRUD productos (vista administración)
-    Route::get('/admin/productos', function () {
-        return view('admin.product');
-    })->name('admin.product');
+    Route::view('/admin/panel','admin.dashboard')->name('admin.dashboard');
 
-    // Gestión de pedidos en administración
-    Route::get('/admin/pedidos', function () {
-        return view('admin.order');
-    })->name('admin.order');
+    Route::view('/admin/productos', 'admin.product')->name('admin.product');
 
-    // Gestión de usuarios en administración
-    Route::get('/admin/usuarios', function () {
-        return view('admin.users');
-    })->name('admin.users');
+    Route::view('/admin/pedidos', 'admin.order')->name('admin.order');
+
+    Route::view('/admin/usuarios', 'admin.users')->name('admin.users');
 });
 
 
@@ -105,16 +75,21 @@ Route::get('/dashboard', function () {
         // Si el rol es 1 (admin), redirige al dashboard admin; sino, perfil usuario normal
         return redirect()->route(Auth::user()->role == 1 ? 'admin.dashboard' : 'user.profile');
     }
-    // Si no está autenticado, redirige al home
-    return redirect('/');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
 // ----------------------------
-// RUTAS DE CONFIGURACIÓN DE PERFIL (Laravel Volt) - PROTEGIDAS
+// RUTAS PROTEGIDAS PARA LOS USUARIOS AUTENTICADOS (Rutas de configuración de perfil - Laravel Volt)
 // ----------------------------
 
 Route::middleware(['auth'])->group(function () {
+
+    // Página carrito de compra
+    Route::view('/carrito', 'user.cart')->name('user.cart');
+
+    // Página de confirmación de pedido
+    Route::view('/confirmacionPedido', 'user.orderConfirmation')->name('user.orderConfirmation');
+
     // Redirigir shortcut a perfil
     Route::redirect('configuracion', 'settings/profile');
 
@@ -126,16 +101,6 @@ Route::middleware(['auth'])->group(function () {
 
 
 // ----------------------------
-// OTRAS RUTAS
-// ----------------------------
-
-// Vista home (lo utiliza laravel en sus vista y si lo quito se peta)
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
-
-
-// ----------------------------
 // RUTAS DE AUTENTICACIÓN POR DEFECTO DE LARAVEL
 // ----------------------------
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

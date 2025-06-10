@@ -7,12 +7,12 @@ use Livewire\Component;
 class AddToCart extends Component
 {
     // Variables públicas que vienen del frontend (se pueden enlazar con wire:model)
-    public $product;    // Producto que se quiere añadir al carrito (objeto Product)
-    public $sizeId;     // ID de la talla seleccionada
+    public $product;     // Producto que se quiere añadir al carrito (objeto Product)
+    public $sizeId;       // ID de la talla seleccionada
     public $quantity = 1; // Cantidad a añadir, por defecto 1
 
     // Variables para mostrar mensajes de feedback al usuario
-    public $message = null;        // Texto del mensaje
+    public $message = null;           // Texto del mensaje
     public $messageType = 'success'; // Tipo de mensaje ('success' o 'error')
 
     /**

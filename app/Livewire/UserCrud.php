@@ -9,8 +9,8 @@ class UserCrud extends Component
 {
     // Variables públicas que se vinculan a la vista (Livewire data binding)
     public $users, $user_id, $name, $email, $role;
-    public $filterName = '';  // Filtro para buscar por nombre
-    public $filterRole = '';  // Filtro para buscar por rol
+    public $filterName = '';                                            // Filtro para buscar por nombre
+    public $filterRole = '';                                            // Filtro para buscar por rol
 
     // Roles definidos para mostrar en un select (clave => valor)
     public $roles = [
@@ -18,7 +18,7 @@ class UserCrud extends Component
         '1' => 'Administrador',
     ];
 
-    // Controla la vista actual, puede ser 'list' (lista) o 'form' (formulario)
+    // Controla la vista actual, puede ser 'list' o 'form'
     public $view = 'list';
 
     /**
@@ -187,6 +187,15 @@ class UserCrud extends Component
     }
 
     /**
+     * Método privado para cargar todos los usuarios en la variable pública $users
+     * Se separó para evitar repetir código en varias funciones
+     */
+    private function loadUsers()
+    {
+        $this->users = User::all();
+    }
+
+    /**
      * Método privado que retorna los datos que serán validados y usados para crear o actualizar usuario
      */
     private function validateData()
@@ -196,14 +205,5 @@ class UserCrud extends Component
             'email' => $this->email,
             'role' => $this->role,
         ];
-    }
-
-    /**
-     * Método privado para cargar todos los usuarios en la variable pública $users
-     * Se separó para evitar repetir código en varias funciones
-     */
-    private function loadUsers()
-    {
-        $this->users = User::all();
     }
 }

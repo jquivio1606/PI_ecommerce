@@ -2,7 +2,7 @@
     <div class="row">
         @foreach ($cartItems as $item)
             <div class="col-12 mb-3">
-                <div class="card p-3" role="group" aria-label="Producto {{ $item->product->name }}">
+                <div class="card p-3" role="group" aria-label="{{ $item->product->name }}">
                     <div class="row">
                         <!-- Imagen del producto -->
                         <div class="col-md-4 col-12 my-3">

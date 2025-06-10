@@ -11,22 +11,24 @@ use Livewire\Component;
 
 class ProductCrud extends Component
 {
-    // Variables públicas para manejar los datos del producto y del formulario
-    public $products, $product_id, $name, $description, $color, $gender, $style, $category, $price, $discount;
-
     use WithFileUploads;
+
+    // Variables públicas para manejar los datos del producto y del formulario
+    public $products, $product_id, $name,
+    $description, $color, $gender, $style,
+    $category, $price, $discount;
 
     public $images = [];
     public $imagesDB = [];
 
     public $newCategory = '';
     public $newSize = '';
-    public $categories = []; // Lista de categorías únicas disponibles
-    public $sizes = []; // Array asociativo de talla_id => stock
-    public $availableSizes; // Tallas disponibles según la categoría (ropa o zapatos)
-    public $allSizes; // Todas las tallas disponibles sin filtrar
+    public $categories = [];                                                    // Lista de categorías únicas disponibles
+    public $sizes = [];                                                 // Array asociativo de talla_id => stock
+    public $availableSizes;                                             // Tallas disponibles según la categoría (ropa o zapatos)
+    public $allSizes;                                               // Todas las tallas disponibles sin filtrar
 
-    public $view = 'list'; // Controla si se muestra la lista o el formulario
+    public $view = 'list';                                              // Controla si se muestra la lista o el formulario
 
     /**
      * Renderiza la vista asociada al componente Livewire
@@ -51,7 +53,6 @@ class ProductCrud extends Component
         $this->categories = Product::distinct()->pluck('category')->toArray();
 
         $this->availableSizes = Size::all();
-
     }
 
     /**
@@ -98,26 +99,6 @@ class ProductCrud extends Component
     }
 
     /**
-     * Filtra tallas disponibles según la categoría actual:
-     * - Si es "calzado", solo devuelve tallas numéricas.
-     * - Para ropa, devuelve tallas XS a XL.
-     */
-    public function filterSizes()
-    {
-        if (strtolower($this->category) === 'calzado') {
-            // Para calzado, filtra solo tallas numéricas
-            $this->availableSizes = $this->allSizes->filter(function ($size) {
-                return is_numeric($size->name);
-            });
-        } else {
-            // Para ropa, filtra tallas estándar XS, S, M, L, XL
-            $this->availableSizes = $this->allSizes->filter(function ($size) {
-                return in_array(strtolower($size->name), ['xs', 's', 'm', 'l', 'xl']);
-            });
-        }
-    }
-
-    /**
      * Limpia todos los campos del formulario para una nueva entrada.
      */
     public function resetInputs()
@@ -137,6 +118,26 @@ class ProductCrud extends Component
     {
         $this->resetInputs();
         $this->view = 'form';
+    }
+
+    /**
+     * Filtra tallas disponibles según la categoría actual:
+     * - Si es "calzado", solo devuelve tallas numéricas.
+     * - Para ropa, devuelve tallas XS a XL.
+     */
+    public function filterSizes()
+    {
+        if (strtolower($this->category) === 'calzado') {
+            // Para calzado, filtra solo tallas numéricas
+            $this->availableSizes = $this->allSizes->filter(function ($size) {
+                return is_numeric($size->name);
+            });
+        } else {
+            // Para ropa, filtra tallas estándar XS, S, M, L, XL
+            $this->availableSizes = $this->allSizes->filter(function ($size) {
+                return in_array(strtolower($size->name), ['xs', 's', 'm', 'l', 'xl']);
+            });
+        }
     }
 
     /**
@@ -231,7 +232,6 @@ class ProductCrud extends Component
             return;
         }
 
-        // Valida solo si hay imágenes
         $this->validate([
             'images.*' => 'image|max:2048',
         ]);
@@ -324,8 +324,6 @@ class ProductCrud extends Component
 
         // Recargar imágenes de BD (opcional si vas a mostrar inmediatamente)
         $this->imagesDB = Image::where('product_id', $product->id)->get();
-
-
 
         $this->resetInputs();
         session()->flash('message', 'Producto creado correctamente.');

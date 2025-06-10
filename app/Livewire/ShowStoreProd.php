@@ -25,10 +25,9 @@ class ShowStoreProd extends Component
 
     public $orderBy;
 
-    public $onlyOffers = false;   // Filtro para mostrar solo productos en oferta
+    public $onlyOffers = false;         // Filtro para mostrar solo productos en oferta
 
     public $prodFiltrado;         // Colección de productos filtrados
-    public $filters = false;      // Flag para indicar si hay filtros activos
 
     /**
      * Inicializa las listas de filtros dinámicos y tallas disponibles
@@ -52,43 +51,36 @@ class ShowStoreProd extends Component
     {
         $query = Product::query();
 
-        $this->filters = false;
         $this->prodFiltrado = null;
 
         // Aplicamos filtro por género
         if (!empty($this->gender)) {
             $query->where('gender', $this->gender);
-            $this->filters = true;
         }
 
         // Filtro por categorías (pueden ser múltiples)
         if (!empty($this->categories)) {
             $query->whereIn('category', $this->categories);
-            $this->filters = true;
         }
 
         // Filtro por color
         if (!empty($this->color)) {
             $query->where('color', $this->color);
-            $this->filters = true;
         }
 
         // Filtro por estilo
         if (!empty($this->style)) {
             $query->where('style', $this->style);
-            $this->filters = true;
         }
 
         // Precio mínimo
         if (!empty($this->priceMin)) {
             $query->where('price', '>=', $this->priceMin);
-            $this->filters = true;
         }
 
         // Precio máximo
         if (!empty($this->priceMax)) {
             $query->where('price', '<=', $this->priceMax);
-            $this->filters = true;
         }
 
         // Filtro por tallas (relación many-to-many)
@@ -96,17 +88,18 @@ class ShowStoreProd extends Component
             $query->whereHas('sizes', function ($q) {
                 $q->whereIn('name', $this->sizes);
             });
-            $this->filters = true;
         }
 
         // Mostrar solo productos en oferta
         if ($this->onlyOffers) {
             $query->where('discount', '>', 0);
-            $this->filters = true;
         }
 
         // Si no hay filtros aplicados, mostramos error y limpiamos resultados
-        if (!$this->filters) {
+        if (
+            empty($this->gender) && empty($this->categories) && empty($this->color) && empty($this->style) &&
+            empty($this->priceMin) && empty($this->priceMax) && empty($this->sizes) && !$this->onlyOffers
+        ) {
             session()->flash('error', 'Introduce algún dato para filtrar');
             $this->prodFiltrado = collect(); // Mejor usar colección vacía que array
             return;
@@ -115,11 +108,9 @@ class ShowStoreProd extends Component
         // Ejecutamos la consulta y guardamos los productos filtrados
         $this->prodFiltrado = $query->with('images')->get();
 
-
         // Si no hay resultados, mostramos mensaje de error
         if ($this->prodFiltrado->isEmpty()) {
             session()->flash('error', 'No se ha encontrado ningún producto con esas características.');
-            $this->filters = false;
         }
     }
 
@@ -136,7 +127,6 @@ class ShowStoreProd extends Component
         $this->sizes = [];
         $this->style = null;
         $this->onlyOffers = false;
-        $this->filters = false;
         $this->prodFiltrado = null;
     }
 

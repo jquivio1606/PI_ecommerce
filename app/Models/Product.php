@@ -13,7 +13,16 @@ class Product extends Model
     protected $table = 'products';
 
     // Campos que se pueden asignar masivamente al crear o actualizar un producto
-    protected $fillable = ['name', 'description', 'color', 'gender', 'style', 'size', 'category', 'stock', 'price', 'discount'];
+    protected $fillable = [
+        'name',
+        'description',
+        'color',
+        'gender',
+        'style',
+        'category',
+        'price',
+        'discount'
+    ];
 
     /**
      * Relación uno a muchos con las imágenes del producto.

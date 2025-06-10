@@ -36,9 +36,9 @@ class AdminDashboard extends Component
     public function render()
     {
         return view('livewire.admin-dashboard', [
-            'products' => Product::all(), // Todos los productos
-            'orders' => Order::all(),     // Todos los pedidos
-            'users' => User::all(),       // Todos los usuarios
+            'products' => Product::all(),   // Todos los productos
+            'orders' => Order::all(),       // Todos los pedidos
+            'users' => User::all(),         // Todos los usuarios
             'recentOrders' => Order::latest()->take(5)->get(),       // Últimos 5 pedidos
             'recentProducts' => Product::latest()->take(5)->get(),   // Últimos 5 productos añadidos
         ]);

@@ -11,16 +11,16 @@ class OrderItem extends Model
 
     // Campos asignables masivamente para un ítem del pedido
     protected $fillable = [
-        'order_id',    // ID del pedido al que pertenece este ítem
-        'product_id',  // ID del producto comprado
-        'size_id',     // ID de la talla seleccionada del producto
-        'quantity',    // Cantidad de este producto en el pedido
-        'price',       // Precio unitario del producto en el momento del pedido
+        'order_id',         // ID del pedido al que pertenece este ítem
+        'product_id',       // ID del producto comprado
+        'size_id',          // ID de la talla seleccionada del producto
+        'quantity',         // Cantidad de este producto en el pedido
+        'price',            // Precio unitario del producto en el momento del pedido
     ];
 
     /**
      * Relación que conecta este ítem con su pedido (Order).
-     * Un ítem pertenece a una orden.
+     * Un ítem pertenece a un pedido.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
