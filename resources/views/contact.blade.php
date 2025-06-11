@@ -1,5 +1,4 @@
 <x-layouts.base metaTitle="Contacto" tituloSeccion="Contacto">
-
     <div class="card shadow-sm h-100 mb-5" aria-label="Información de contacto" title="Información de contacto">
         <div class="card-body d-flex flex-column justify-content-between p-5">
             <p class="mb-2" style="font-size: 1.1rem">
@@ -39,5 +38,4 @@
             <p class="mt-5 text-end">Última actualización: {{ date('d/m/Y') }}</p>
         </div>
     </div>
-
 </x-layouts.base>

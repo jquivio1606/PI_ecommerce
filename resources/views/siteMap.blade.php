@@ -14,16 +14,6 @@
                 </li>
                 <li><a href="{{ route('user.aboutUs') }}" title="Más información sobre nosotros"
                         aria-label="Sobre nosotros">Sobre nosotros</a></li>
-                <li aria-label="Carrito de compras">
-                    @auth
-                        <a href="{{ route('user.cart') }}" title="Ver carrito de compras" aria-label="Carrito">Carrito</a>
-                    @else
-                        <span title="Debes iniciar sesión para acceder al carrito" aria-label="Carrito (no disponible)">
-                             <span class="fw-semibold"> Carrito </span> <small>(No disponible sin iniciar sesión)</small>
-                        </span>
-                    @endauth
-                </li>
-
                 <li><a href="{{ route('contact') }}" title="Formulario de contacto" aria-label="Contacto">Contacto</a>
                 </li>
                 <li><a href="{{ route('legalNotice') }}" title="Aviso legal y privacidad" aria-label="Aviso legal">Aviso
@@ -34,7 +24,7 @@
                 </li>
             </ul>
 
-            <h3 class="h4 mt-4 fw-semibold border-bottom pb-2">Autenticación</h3>
+            <h3 class="h4 mt-4 fw-semibold border-bottom pb-2">Páginas de autenticación</h3>
             <ul class="list-unstyled ps-3">
                 <li><a href="{{ route('login') }}" title="Iniciar sesión" aria-label="Login">Login</a></li>
                 <li><a href="{{ route('register') }}" title="Crear una cuenta" aria-label="Registrarse">Registrarse</a>
@@ -50,16 +40,22 @@
                 <li><a href="{{ route('2fa') }}" title="Verificación en dos pasos" aria-label="2FA">2FA</a></li>
             </ul>
 
+            <h3 class="h4 mt-4 fw-semibold border-bottom pb-2">Páginas para usuario autenticado</h3>
+            <ul class="list-unstyled ps-3">
+                <li aria-label="Carrito de compras">
+                    <a href="{{ route('user.cart') }}" title="Ver carrito de compras" aria-label="Carrito">Carrito</a>
+                </li>
+
+                <li aria-label="Confirmación de pedido">
+                    <a href="{{ route('user.orderConfirmation') }}" title="Ver confirmación de pedido" aria-label="Confirmación de pedido">Confirmación de pedido</a>
+                </li>
+            </ul>
+
             <h3 class="h4 mt-4 fw-semibold border-bottom pb-2">Zona de usuario</h3>
             <ul class="list-unstyled ps-3">
                 <li><a href="{{ route('user.profile') }}" title="Ver perfil de usuario" aria-label="Perfil">Perfil</a>
                 </li>
                 <li><a href="{{ route('user.orders') }}" title="Historial de pedidos" aria-label="Pedidos">Pedidos</a>
-                </li>
-                <li aria-label="Confirmación de pedido (no disponible)">
-                    <span title="Solo accesible después de seleccionar productos en el carrito">
-                        <span class="fw-semibold">Confirmación de pedido</span> <small>(no disponible directamente)</small>
-                    </span>
                 </li>
             </ul>
 

@@ -30,7 +30,6 @@
             font-size: small;
         }
 
-
         textarea,
         input,
         select {
@@ -52,8 +51,6 @@
             border-radius: 0.5rem;
             box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
         }
-
-
 
         @media (max-width: 950px) {
             .container {

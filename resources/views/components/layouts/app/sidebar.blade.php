@@ -22,7 +22,8 @@
 
         <flux:dropdown position="top" align="end" aria-label="Menú desplegable de perfil de usuario">
             <flux:profile :initials="auth() -> user() -> initials()" icon-trailing="chevron-down"
-                title="Perfil de usuario" aria-label="Perfil de usuario" />
+                title="{{ auth()->user()->initials() }} - Perfil de usuario"
+                aria-label="{{ auth()->user()->initials() }} - Perfil de usuario" />
 
             <flux:menu>
                 <flux:menu.radio.group>
@@ -82,8 +83,7 @@
             <flux:navlist variant="outline" aria-label="Navegación principal">
                 <flux:navlist.group :heading="__('Tienda')" class="grid fw-bold" aria-label="Sección Tienda">
                     <flux:navlist.item
-                        class="text-dark text-decoration-none border border-1 border-dark-subtle shadow-sm rounded
-"
+                        class="text-dark text-decoration-none border border-1 border-dark-subtle shadow-sm rounded"
                         :href="route('user.index')" :current="request() -> routeIs('user.index')" wire:navigate
                         title="Ir a la página principal de la tienda" aria-label="Ir a la Tienda">
                         {{ __('Ir a la Tienda') }}
@@ -96,8 +96,7 @@
                     <flux:navlist.group :heading="__('Panel de administrador')" class="grid fw-bold"
                         aria-label="Sección Panel de administrador">
                         <flux:navlist.item icon="home"
-                            class="text-dark text-decoration-none  border border-1 border-dark-subtle shadow-sm rounded
-"
+                            class="text-dark text-decoration-none  border border-1 border-dark-subtle shadow-sm rounded"
                             :href="route('admin.dashboard')" :current="request() -> routeIs('admin.dashboard')"
                             wire:navigate title="Ir al panel de administrador" aria-label="Panel de administrador">
                             {{ __('Panel de administrador') }}
@@ -109,24 +108,21 @@
                     <flux:navlist.group :heading="__('Opciones de administrador')" class="grid fw-bold"
                         aria-label="Opciones para administrador">
                         <flux:navlist.item
-                            class="text-dark text-decoration-none d-flex align-items-center gap-2  border border-1 border-dark-subtle shadow-sm rounded
-"
+                            class="text-dark text-decoration-none d-flex align-items-center gap-2  border border-1 border-dark-subtle shadow-sm rounded"
                             :href="route('admin.product')" :current="request() -> routeIs('admin.product')"
                             wire:navigate title="Información de productos" aria-label="Información Productos">
                             <i class="bi bi-box-seam me-2" aria-hidden="true"></i> {{ __('Información Productos') }}
                         </flux:navlist.item>
 
                         <flux:navlist.item
-                            class="text-dark text-decoration-none d-flex align-items-center gap-2 border border-1 border-dark-subtle shadow-sm rounded
-"
+                            class="text-dark text-decoration-none d-flex align-items-center gap-2 border border-1 border-dark-subtle shadow-sm rounded"
                             :href="route('admin.order')" :current="request() -> routeIs('admin.order')" wire:navigate
                             title="Información de pedidos" aria-label="Información Pedidos">
                             <i class="bi bi-cart-check me-2" aria-hidden="true"></i> {{ __('Información Pedidos') }}
                         </flux:navlist.item>
 
                         <flux:navlist.item
-                            class="text-dark text-decoration-none d-flex align-items-center gap-2 border border-1 border-dark-subtle shadow-sm rounded
-"
+                            class="text-dark text-decoration-none d-flex align-items-center gap-2 border border-1 border-dark-subtle shadow-sm rounded"
                             :href="route('admin.users')" :current="request() -> routeIs('admin.users')" wire:navigate
                             title="Información de usuarios" aria-label="Información Usuarios">
                             <i class="bi bi-box-seam me-2" aria-hidden="true"></i> {{ __('Información Usuarios') }}
@@ -135,8 +131,7 @@
                 @else
                     <flux:navlist.group :heading="__('Perfil')" class="grid" aria-label="Sección Perfil de usuario">
                         <flux:navlist.item icon="home"
-                            class="text-dark text-decoration-none border border-1 border-dark-subtle shadow-sm rounded
-"
+                            class="text-dark text-decoration-none border border-1 border-dark-subtle shadow-sm rounded"
                             :href="route('user.profile')" :current="request() -> routeIs('user.profile')"
                             wire:navigate title="Ir al perfil de usuario" aria-label="Perfil">
                             {{ __('Perfil') }}
@@ -148,8 +143,7 @@
                     <flux:navlist.group :heading="__('Información del usuario')" class="grid fw-bold"
                         aria-label="Información del usuario">
                         <flux:navlist.item
-                            class="text-dark text-decoration-none d-flex align-items-center gap-2 border border-1 border-dark-subtle shadow-sm rounded
-"
+                            class="text-dark text-decoration-none d-flex align-items-center gap-2 border border-1 border-dark-subtle shadow-sm rounded"
                             :href="route('user.orders')" :current="request() -> routeIs('user.orders')" wire:navigate
                             title="Ver mis pedidos" aria-label="Mis Pedidos">
                             <i class="bi bi-cart-check me-2" aria-hidden="true"></i> {{ __('Mis Pedidos') }}
@@ -163,8 +157,10 @@
             <!-- Menú de usuario de escritorio -->
             <flux:dropdown position="bottom" align="start" aria-label="Menú desplegable de usuario de escritorio">
                 <flux:profile :name="auth() -> user() -> name" :initials="auth() -> user() -> initials()"
-                    icon-trailing="chevrons-up-down" title="Perfil de usuario"
-                    class="border border-1 border-dark-subtle shadow-sm rounded" aria-label="Perfil de usuario" />
+                    icon-trailing="chevrons-up-down"
+                    title="{{ auth()->user()->initials() }} - {{ auth()->user()->name }} - Perfil de usuario"
+                    class="border border-1 border-dark-subtle shadow-sm rounded"
+                    aria-label="{{ auth()->user()->initials() }} - {{ auth()->user()->name }} - Perfil de usuario" />
 
                 <flux:menu class="w-[220px]">
                     <flux:menu.radio.group class="w-[280px]">
@@ -202,8 +198,8 @@
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
                             style="outline: none;" onfocus="this.style.outline='1px solid #000'"
-                            onblur="this.style.outline='none'" class="w-full rounded text-dark text-decoration-none" title="Cerrar sesión"
-                            aria-label="Cerrar sesión">
+                            onblur="this.style.outline='none'" class="w-full rounded text-dark text-decoration-none"
+                            title="Cerrar sesión" aria-label="Cerrar sesión">
                             {{ __('Cerrar sesión') }}
                         </flux:menu.item>
                     </form>
