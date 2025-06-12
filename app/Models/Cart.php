@@ -21,7 +21,7 @@ class Cart extends Model
     }
 
     /**
-     * Relación inversa uno a muchos con el usuario.
+     * Relación inversa uno a uno con el usuario.
      * Cada carrito pertenece a un usuario específico.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
