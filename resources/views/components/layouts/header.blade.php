@@ -4,7 +4,7 @@
         <!-- logo + nombre -->
         <div class="d-flex align-items-center gap-2">
             @include('components.app-logo-icon')
-            <h1 class=" h4 mb-0">Nombre Tienda</h1>
+            <h1 class=" h4 mb-0">Tu Rincón de Ropa</h1>
         </div>
         <!-- login / registro -->
         @if (Route::has('login'))

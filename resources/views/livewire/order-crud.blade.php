@@ -79,7 +79,7 @@
                 @foreach ($order->items as $item)
                     <div class="row align-items-center mb-3 pb-3 border-bottom">
                         <div class="col-md-3">
-                            <h6 class="mb-0" title="Nombre del producto">{{ $item->product->name }}</h6>
+                            <h3 class="h6 mb-0" title="Nombre del producto">{{ $item->product->name }}</h3>
                         </div>
                         <div class="col-md-2">
                             <span class="text-muted">Talla:</span> {{ $item->size->name }}

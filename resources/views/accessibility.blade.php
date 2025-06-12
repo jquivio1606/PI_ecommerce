@@ -33,9 +33,9 @@
 
             <h4 class="h5 mt-4 fw-semibold border-bottom pb-2">Situación de cumplimiento</h4>
             <p>
-                Tras la autoevaluación llevada a cabo, se determina que este sitio web es no conforme con el Real
-                Decreto 1112/2018, de 7 de septiembre, debido a la falta de conformidad de los aspectos que se indican a
-                continuación.
+                Tras la autoevaluación llevada a cabo, se determina que este sitio web es <span
+                    style="text-decoration: underline">PARCIALMENTE CONFORME</span> con el Real
+                Decreto 1112/2018, de 7 de septiembre.
             </p>
         </div>
     </div>
@@ -50,21 +50,24 @@
                 El contenido que se recoge a continuación no es accesible por los siguientes motivos:
             </p>
             <ul>
-                <li>Falta de conformidad con Real Decreto 1112/2018, como reproductores de vídeo sin subtítulos
-                    disponibles.</li>
-                <li>Imágenes sin texto alternativo.</li>
-                <li>Falta de audiodescripción o medios alternativos en vídeos pregrabados.</li>
-                <li>Problemas de contraste en algunos elementos.</li>
-                <li>Inadecuada descripción de enlaces o botones.</li>
-                <li>Problemas de navegación por teclado no accesibles.</li>
+                <li>Existen páginas donde hay contenedores vacíos donde los elementos que tienen un tipo de rol, pero no
+                    contienen ningún elemento de propiedad requerido. [Requisito 9.1.3.1 Información y relaciones]</li>
+                <li>Existen páginas con elementos con un [role] ARIA que requieren que los elementos secundarios contengan
+                un [role] específico, a los que les faltan algunos o todos los elementos secundarios necesarios.
+                [Requisito 9.1.3.1 Información y relaciones]</li>
+                <li>Existen páginas con atributos [role] que no están incluidos dentro de los elementos principales
+                obligatorios. [Requisito 9.1.3.1 Información y relaciones]</li>
+                <li>Existen páginas donde hay bloques de contenido en las páginas pero no hay un mecanismo para saltarlos.
+                [Requisito 9.2.4.1 Evitar bloques]</li>
+                <li>Existen problemas de conformidad en el nivel AA ya que no cumplen todas las pautas WCAG 2.1 de
+                accesibilidad. [Requisito 9.6 Requisitos de conformidad de las Pautas WCAG]</li>
             </ul>
 
-            <h4 class="h5 mt-4 fw-semibold border-bottom pb-2">Carga desproporcionada</h4>
-            <p>
-                No aplica en este caso. El contenido no entra dentro del ámbito de la legislación aplicable, y algunos
-                archivos o contenidos podrían no cumplir con todos los requisitos de accesibilidad debido a la fecha de
-                su publicación.
-            </p>
+            <h4 class="h5 mt-4 fw-semibold border-bottom pb-2">Carga desproporcionada:</h4>
+            <p> No aplica. </p>
+
+            <h4 class="h5 mt-4 fw-semibold border-bottom pb-2">El contenido no entra dentro del ámbito de la legislación aplicable:</h4>
+            <p> No aplica. </p>
         </div>
     </div>
 

@@ -63,7 +63,7 @@
 
     @if ($lowStockProducts->count() > 0)
         <div class="alert alert-warning shadow-sm">
-            <h5><i class="bi bi-exclamation-triangle-fill me-2"></i>Productos con poco stock:</h5>
+            <h3 class="h5"><i class="bi bi-exclamation-triangle-fill me-2"></i>Productos con poco stock:</h3>
             <ul class="mb-0">
                 @foreach ($lowStockProducts as $product)
                     <li>

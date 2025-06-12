@@ -3,12 +3,12 @@
 
 
 <title>
+    Tu Rincón de Ropa -
     @if (isset($title))
         {{ $title }}
     @else
         @yield('title', 'Auth Laravel')
     @endif
-    - Nombre Tienda
 </title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />

@@ -29,7 +29,8 @@
                         <!-- Flecha izquierda -->
                         <button class="carousel-control-prev" type="button"
                             style="background-color: rgba(255, 255, 255, 0.7);"
-                            data-bs-target="#carouselProductImages{{ $product->id }}" data-bs-slide="prev">
+                            data-bs-target="#carouselProductImages{{ $product->id }}" data-bs-slide="prev"
+                            title="Imagen anterior" aria-label="Imagen anterior">
                             <span class="carousel-control-prev-icon" style="filter: invert(1);"
                                 aria-hidden="true"></span>
                         </button>
@@ -37,7 +38,8 @@
                         <!-- Flecha derecha -->
                         <button class="carousel-control-next" type="button"
                             style="background-color: rgba(255, 255, 255, 0.7);"
-                            data-bs-target="#carouselProductImages{{ $product->id }}" data-bs-slide="next">
+                            data-bs-target="#carouselProductImages{{ $product->id }}" data-bs-slide="next"
+                            title="Imagen siguiente" aria-label="Imagen siguiente">
                             <span class="carousel-control-next-icon" style="filter: invert(1);"
                                 aria-hidden="true"></span>
                         </button>
