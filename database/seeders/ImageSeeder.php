@@ -140,7 +140,7 @@ class ImageSeeder extends Seeder
             ['product_id' => 35, 'url' => 'fotos_productos/zapatos_depor_uni_blanco.jpg'],
 
             // 34. Zapatos casual unisex naranja
-            ['product_id' => 36, 'url' => 'fotos_productos/zapatos_casual_uni_naranja.png'],
+            ['product_id' => 36, 'url' => 'app/public/fotos_productos/zapatos_casual_uni_naranja.png'],
         ];
 
         foreach ($images as $img) {
